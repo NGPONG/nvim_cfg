@@ -1,55 +1,36 @@
 ------------------------------------------------------------------------------------------------
 local view = require 'nvim-tree.view'
+local events = require 'native.events'
+local logger = require 'utils.log'
+local tool = require 'utils.tool'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local group_id = vim.api.nvim_create_augroup("nvim-tree_group", { clear = true, })
+local group_id = vim.api.nvim_create_augroup("ngpong_nvim-tree_group", { clear = true, })
 ------------------------------------------------------------------------------------------------
 
---require('plugins.nvim-tree.keys').on_open_tree = function()
---  if not view.is_visible() then
---
---  else
---    print('hello,visible')
---  end
---end
---
---require('plugins.nvim-tree.keys').on_close_tree = function()
---  if not view.is_visible() then
---
---  else
---    print('hello,visible')
---  end
---end
+events.rg_on_open_tree(function ()
+  if #vim.api.nvim_get_autocmds({ group = group_id }) ~= 0 then
+    return
+  end
 
---[[   binder.keymap(binder.E_NORMAL, 'sk', function()
-    logger.info(view.get_winnr())
-    logger.info(vim.api.nvim_get_current_win())
-
-    if (view.get_winnr() == vim.api.nvim_get_current_win()) then
-      M.guicursor = vim.o.guicursor
-      vim.o.guicursor = ''
+  vim.api.nvim_create_autocmd('BufEnter', {
+    group = group_id,
+    pattern = { '*' },
+    callback = function()
+      if view.get_bufnr() == vim.api.nvim_win_get_buf(0) then
+        tool.hide_cursor()
+      else
+        tool.unhide_cursor()
+      end
     end
+  })
+end)
 
-    return '<CMD>wincmd h<CR>'
-  end, opts('', { expr = true, remap = false }))
-  binder.keymap(binder.E_NORMAL, 's;', function()
-    local tree_win = view.get_winnr()
-    local current_win = vim.api.nvim_get_current_win()
+events.rg_on_close_tree(function()
+  if #vim.api.nvim_get_autocmds({ group = group_id }) == 0 then
+    return
+  end
 
-    vim.o.guicursor = M.guicursor
-    M.guicursor = nil
-
-    return '<CMD>wincmd l<CR>'
-  end, opts('', { expr = true, remap = false }))
- ]]
-  -- print(vim.inspect(vim.api.nvim_get_hl(0, { name = 'Cursor' })))
-
-  -- vim.cmd('set termguicolors')
-  -- vim.cmd('hi Cursor blend=100')
-  -- vim.cmd('set guicursor+=a:Cursor/lCursor')
-
-  -- lua print(require('nvim-tree.view').is_visible())
-  -- lua print(vim.inspect(vim.api.nvim_get_autocmds({pattern='*'})))
-
-  -- binder.keymap(binder.E_ALL, ':', '<NOP>', opts('Disable command line.'))
+  vim.api.nvim_clear_autocmds({ group = group_id })
+end)

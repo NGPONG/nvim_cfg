@@ -10,7 +10,15 @@ require("bufferline").setup({
     numbers = 'none',
     show_buffer_close_icons = false,
     show_close_icon = true,
-    separator_style = "slant"
+    separator_style = "slant",
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = "File Explorer",
+        highlight = "Directory",
+        text_align = "center",
+      }
+    },
   }
 })
 ------------------------------------------------------------------------------------------------

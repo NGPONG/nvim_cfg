@@ -1,14 +1,20 @@
 ------------------------------------------------------------------------------------------------
-local function set_keymap()
-  local t = {}
+local events = require 'native.events'
+------------------------------------------------------------------------------------------------
 
-  t['<C-p>'] = {'scroll', {'-vim.wo.scroll', 'true', '250'}}
-  t['<C-;>'] = {'scroll', { 'vim.wo.scroll', 'true', '250'}}
-  t['<C-S-p>'] = {'scroll', {'-vim.api.nvim_win_get_height(0)', 'true', '450'}}
-  t['<C-:>'] = {'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '450'}}
+------------------------------------------------------------------------------------------------
+events.rg_on_nvim_enter(function ()
+  local function set_keymap()
+    local t = {}
 
-  return t
-end
+    t['<C-p>'] = {'scroll', {'-vim.wo.scroll', 'true', '250'}}
+    t['<C-;>'] = {'scroll', { 'vim.wo.scroll', 'true', '250'}}
+    t['<C-S-p>'] = {'scroll', {'-vim.api.nvim_win_get_height(0)', 'true', '450'}}
+    t['<C-:>'] = {'scroll', { 'vim.api.nvim_win_get_height(0)', 'true', '450'}}
 
-require('neoscroll.config').set_mappings(set_keymap())
+    return t
+  end
+
+  require('neoscroll.config').set_mappings(set_keymap())
+end)
 ------------------------------------------------------------------------------------------------

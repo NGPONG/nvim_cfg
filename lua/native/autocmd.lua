@@ -11,7 +11,7 @@ local logger = require 'utils.log'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local group_id = vim.api.nvim_create_augroup("basic_group", { clear = true, })
+local group_id = vim.api.nvim_create_augroup("ngpong_global_group", { clear = true, })
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -20,7 +20,7 @@ local group_id = vim.api.nvim_create_augroup("basic_group", { clear = true, })
 -- REF:
 --  1. https://www.reddit.com/r/neovim/comments/ucgxmj/how_to_update_the_lastpositionjump_to_a_lua/
 --  2. https://www.reddit.com/r/neovim/comments/632wh4/neovim_does_not_save_last_cursor_position/
-vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+vim.api.nvim_create_autocmd('BufReadPost', {
   group = group_id,
   pattern = { '*' },
   callback = function()
@@ -44,11 +44,11 @@ vim.api.nvim_create_autocmd({ "BufReadPost" }, {
 --
 -- REF:
 --  1. https://neovim.io/doc/user/change.html#registers
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
+vim.api.nvim_create_autocmd('VimEnter', {
   group = group_id,
   pattern = { '*' },
   callback = function()
-    vim.fn.setreg('/', {})
+    tool.clear_searchpattern()
   end
 })
 
@@ -57,19 +57,28 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
 -- REF:
 --  1. https://unix.stackexchange.com/questions/574764/vim-automatically-clear-the-command-line
 --  2. https://www.reddit.com/r/neovim/comments/130f9jk/automatically_clear_the_command_line/
-vim.api.nvim_create_autocmd("CmdlineLeave", {
-	group = group_id,
-	callback = function()
-    vim.fn.timer_start(5000, function()
-      if 'n' == vim.api.nvim_get_mode()['mode'] then
-        print('')
-      end
-		end)
-	end
+--vim.api.nvim_create_autocmd('CmdlineLeave', {
+--	group = group_id,
+--	callback = function()
+--    vim.fn.timer_start(5000, function()
+--      if 'n' == vim.api.nvim_get_mode()['mode'] then
+--        print('')
+--      end
+--		end)
+--	end
+--})
+
+-- 设置颜色组
+vim.api.nvim_create_autocmd('ColorScheme', {
+  group = group_id,
+  pattern = { '*' },
+  callback = function()
+    vim.api.nvim_set_hl(0, 'NGPONGHiddenCursor', { reverse = true, blend = 100 })
+  end
 })
 
 -- 公共 VimEnter 事件
-vim.api.nvim_create_autocmd({ "VimEnter" }, {
+vim.api.nvim_create_autocmd('VimEnter', {
   group = group_id,
   pattern = { '*' },
   callback = function()
@@ -78,7 +87,7 @@ vim.api.nvim_create_autocmd({ "VimEnter" }, {
 })
 
 -- 公共 BufReadPost 事件
-vim.api.nvim_create_autocmd({ "BufReadPost" }, {
+vim.api.nvim_create_autocmd('BufReadPost', {
   group = group_id,
   pattern = { '*' },
   callback = function()

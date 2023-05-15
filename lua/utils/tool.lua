@@ -36,6 +36,23 @@ function M.clear_commandline()
    vim.fn.feedkeys(':', 'nx')
 end
 
+function M.clear_searchpattern()
+   vim.fn.setreg('/', {})
+end
+
+function M.hide_cursor()
+   if vim.o.termguicolors and vim.o.guicursor ~= "" then
+      M.guicursor = vim.o.guicursor
+      vim.o.guicursor = "a:NGPONGHiddenCursor"
+   end
+end
+
+function M.unhide_cursor()
+   if vim.o.guicursor == "a:NGPONGHiddenCursor" then
+      vim.o.guicursor = M.guicursor
+   end
+end
+
 -- local lastinput_key = ''
 -- local lastrelease_key = ''
 -- vim.on_key(function(key)

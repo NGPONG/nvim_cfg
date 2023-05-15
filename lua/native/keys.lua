@@ -327,7 +327,7 @@ events.rg_on_nvim_enter(function ()
     end
   end)
   binder.keymap(binder.E_NORMAL, '?', function()
-    vim.fn.setreg('/', {})
+    tool.clear_searchpattern()
     tool.clear_commandline()
   end, { remap = false })
 
