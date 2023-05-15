@@ -9,6 +9,7 @@ local tool = require 'utils.tool'
 local group_id = vim.api.nvim_create_augroup("ngpong_nvim-tree_group", { clear = true, })
 ------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------
 events.rg_on_open_tree(function ()
   if #vim.api.nvim_get_autocmds({ group = group_id }) ~= 0 then
     return
@@ -34,3 +35,4 @@ events.rg_on_close_tree(function()
 
   vim.api.nvim_clear_autocmds({ group = group_id })
 end)
+------------------------------------------------------------------------------------------------
