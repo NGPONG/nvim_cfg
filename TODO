@@ -6,3 +6,7 @@
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
 https://github.com/SmiteshP/nvim-navic
+
+nvim-cmp 的问题
+https://github.com/hrsh7th/nvim-cmp/issues/148
+https://github.com/hrsh7th/nvim-cmp/issues/598
