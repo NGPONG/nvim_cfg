@@ -15,6 +15,8 @@ events.rg_on_open_tree(function ()
     return
   end
 
+  tool.hide_cursor()
+
   vim.api.nvim_create_autocmd('BufEnter', {
     group = group_id,
     pattern = { '*' },

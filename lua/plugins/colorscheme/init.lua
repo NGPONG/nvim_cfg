@@ -5,6 +5,6 @@ require 'plugins.manager'.define(function(use)
 end)
 
 require 'plugins.manager'.setup(function(use)
-  require 'plugins.colorscheme.setup'
   require 'plugins.colorscheme.opts'
+  require 'plugins.colorscheme.setup'
 end)

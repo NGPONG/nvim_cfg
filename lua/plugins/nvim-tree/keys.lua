@@ -111,7 +111,7 @@ end)
 -- 绑定全局的key
 events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_NORMAL, '<C-m>', function()
-    api.tree.toggle { find_file = false, current_window = false, focus = false, path = '', update_root = false }
+    api.tree.toggle { find_file = false, current_window = false, focus = true, path = '', update_root = false }
     if view.is_visible() then
       events.do_on_open_tree()
     else

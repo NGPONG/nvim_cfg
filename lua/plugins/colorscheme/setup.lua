@@ -23,8 +23,11 @@ require('gruvbox').setup({
   inverse = true,
   contrast = 'soft',
   palette_overrides = {},
-  overrides = {},
   dim_inactive = false,
+  overrides = {
+    SignColumn = { bg = require("gruvbox.palette").get_base_colors(vim.o.background, 'soft').bg0 }
+  },
   transparent_mode = false,
 })
+vim.cmd.colorscheme('gruvbox')
 ------------------------------------------------------------------------------------------------
