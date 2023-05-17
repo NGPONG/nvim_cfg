@@ -7,7 +7,7 @@ require 'plugins.manager'.define(function(use)
 end)
 
 require 'plugins.manager'.setup(function(use)
-  require 'plugins.bufferline.setup'
   require 'plugins.bufferline.opts'
   require 'plugins.bufferline.keys'
+  require 'plugins.bufferline.setup'
 end)

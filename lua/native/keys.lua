@@ -239,11 +239,12 @@ end)
 events.rg_on_nvim_enter(function ()
   -- 使用 <ESC> 退出 insert 模式时，光标不会向前移一位
   binder.keymap(binder.E_INSERT, '<ESC>', function()
-    return vim.fn.col('.') == 1 and '<ESC>' or '<ESC>\''
+    return '<ESC>'
+    --return vim.fn.col('.') == 1 and '<ESC>' or '<ESC>\''
   end, { expr = true })
 
   -- 进入 insert 模式
-  binder.keymap(binder.E_NORMAL, 'a', 'i', { remap = false })
+  binder.keymap(binder.E_NORMAL, 'a', 'a', { remap = false })
 
   -- Left-Right-Up-Down montions
   binder.keymap({ binder.E_NORMAL, binder.E_VISUAL }, 'l', 'h', { remap = false })

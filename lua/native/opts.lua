@@ -60,28 +60,20 @@ vim.wo.number = true
 -- 使用空格替代 <Tab>
 vim.bo.expandtab = true
 
+local tab_size = 1
 if (tool.curpath_exist('project_w_server') or tool.curpath_exist('game301_server')) then
-  -- 控制 <Tab> 缩进所代表的空格数
-  vim.bo.tabstop = 4
-  vim.bo.softtabstop = 4
-  -- 控制 shift 缩进所代表的空格数
-  vim.bo.shiftwidth = 4
-  vim.go.shiftround = true
+  tab_size = 4
 elseif (vim.fn.expand('%:e') == 'go') then
-  -- 控制 <Tab> 缩进所代表的空格数
-  vim.bo.tabstop = 4
-  vim.bo.softtabstop = 4
-  -- 控制 shift 缩进所代表的空格数
-  vim.bo.shiftwidth = 4
-  vim.go.shiftround = true
+  tab_size = 4
 else
-  -- 控制 <Tab> 缩进所代表的空格数
-  vim.bo.tabstop = 2
-  vim.bo.softtabstop = 2
-  -- 控制 shift 缩进所代表的空格数
-  vim.bo.shiftwidth = 2
-  vim.go.shiftround = true
+  tab_size = 4
 end
+-- 控制 <Tab> 缩进所代表的空格数
+vim.bo.tabstop = tab_size
+vim.bo.softtabstop = tab_size
+-- 控制 shift 缩进所代表的空格数
+vim.bo.shiftwidth = tab_size
+vim.go.shiftround = true
 
 -- 新行自动对齐上一行
 vim.bo.autoindent = false

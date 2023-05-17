@@ -2,7 +2,7 @@
 2. 配置buffer-line
   - explore 的宽度好像有点问题
 3. 配置lualine
-
+4. native key 下的 a 键还有 esc 键有问题
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
