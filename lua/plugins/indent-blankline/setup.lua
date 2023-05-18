@@ -5,12 +5,10 @@
 
 ------------------------------------------------------------------------------------------------
 require("indent_blankline").setup {
-  --enabled = false,
+  enabled = true,
   show_end_of_line = false,
   strict_tabs = false,
-  --char = '┆',
   char_list = {'|', '¦', '┆', '┊'},
-  char_blankline = ' ',
   space_char_blankline = ' ',
   show_first_indent_level = true,
 }

@@ -13,6 +13,9 @@ binder.keymap(binder.E_NORMAL, 'bm,', '<CMD>BufferLineMovePrev<CR>', { remap = f
 binder.keymap(binder.E_NORMAL, 'bs', '<CMD>BufferLinePick<CR>', { remap = false })
 binder.keymap(binder.E_NORMAL, 'bp', '<CMD>BufferLineTogglePin<CR>', { remap = false })
 binder.keymap(binder.E_NORMAL, 'bc', function()
+  bufdelete.bufdelete(0, false)
+end, { remap = false })
+binder.keymap(binder.E_NORMAL, 'bC', function()
   bufdelete.bufwipeout(0, false)
 end, { remap = false })
 ------------------------------------------------------------------------------------------------

@@ -1,12 +1,25 @@
---1. nvim-tree 在获得焦点后删除鼠标的显示(让它更像一个文件浏览器，而不是一个 text editor)
-2. 配置buffer-line
-  - explore 的宽度好像有点问题
-3. 配置lualine
-4. native key 下的 a 键还有 esc 键有问题
+--nvim-tree 在获得焦点后删除鼠标的显示(让它更像一个文件浏览器，而不是一个 text editor)
+
+--配置buffer-line
+--  * explore 的宽度好像有点问题
+    * lsp 提示？
+
+配置lualine
+--  * 看懂配置大概是干啥的
+    * 再做一些自定义话，比如git的一些东西
+    * lsp 提示？
+
+native key 下的 a 键还有 esc 键有问题
+
+bufferline lualine 配置 lsp 相关的提示?
+
+scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
 https://github.com/SmiteshP/nvim-navic
+https://github.com/akinsho/toggleterm.nvim
+https://github.com/nvim-neo-tree/neo-tree.nvim
 
 nvim-cmp 的问题
 https://github.com/hrsh7th/nvim-cmp/issues/148
