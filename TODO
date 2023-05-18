@@ -1,4 +1,7 @@
---nvim-tree 在获得焦点后删除鼠标的显示(让它更像一个文件浏览器，而不是一个 text editor)
+-- nvim-tree 在获得焦点后删除鼠标的显示(让它更像一个文件浏览器，而不是一个 text editor)
+    * git 的提示
+    * lsp 的提示
+    * 能否将提示符对准左边？
 
 --配置buffer-line
 --  * explore 的宽度好像有点问题
