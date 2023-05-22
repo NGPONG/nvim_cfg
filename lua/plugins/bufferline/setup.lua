@@ -17,7 +17,7 @@ require("bufferline").setup({
     show_tab_indicators = true,
     offsets = {
       {
-        filetype = "NvimTree",
+        filetype = "neo-tree",
         text = "FILE EXPLOREER",
         highlight = "Directory",
         text_align = "center",

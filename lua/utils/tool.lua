@@ -19,6 +19,10 @@ function M.tbl_r_extend(...)
    return vim.tbl_extend('force', ...)
 end
 
+function M.tbl_r_deepextend(...)
+   return vim.tbl_deep_extend('force', ...)
+end
+
 function M.tbl_unpack(t)
    local fn = table.unpack or unpack
    return fn(t)
@@ -40,17 +44,31 @@ function M.clear_searchpattern()
    vim.fn.setreg('/', {})
 end
 
+function M.ishide_cursor()
+   if vim.o.guicursor == "a:NGPONGHiddenCursor" then
+      return true
+   else
+      return false
+   end
+end
+
 function M.hide_cursor()
-   if vim.o.termguicolors and vim.o.guicursor ~= "" then
-      M.guicursor = vim.o.guicursor
-      vim.o.guicursor = "a:NGPONGHiddenCursor"
+   if not M.ishide_cursor() then
+      if vim.o.termguicolors and vim.o.guicursor ~= "" then
+         M.guicursor = vim.o.guicursor
+         vim.o.guicursor = "a:NGPONGHiddenCursor"
+      end
    end
 end
 
 function M.unhide_cursor()
-   if vim.o.guicursor == "a:NGPONGHiddenCursor" then
+   if M.ishide_cursor() then
       vim.o.guicursor = M.guicursor
    end
+end
+
+function M.feedkeys(key)
+   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'n', false)
 end
 
 -- local lastinput_key = ''

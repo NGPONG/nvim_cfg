@@ -29,9 +29,6 @@ require("nvim-tree").setup({
     show_on_open_dirs = true,
     debounce_delay = 50,
   },
-  filters = {
-    dotfiles = false,
-  },
   view = {
     centralize_selection = false,
     --debounce_delay = 15,
@@ -39,17 +36,20 @@ require("nvim-tree").setup({
     signcolumn = "yes",
   },
   renderer = {
-    root_folder_label = false,
+    root_folder_label = true,
     group_empty = true,
     highlight_git = true,
     add_trailing = false,
     full_name = true,
-    --highlight_opened_files = 'all',
-    highlight_modified = 'all',
+    indent_width = 2,
+    indent_markers = {
+      enable = true,
+    },
     icons = {
       git_placement = 'after',
       padding = ' '
     },
+    highlight_modified = 'all',
   },
   update_focused_file = {
     enable = true,
@@ -72,6 +72,10 @@ require("nvim-tree").setup({
     enable = true,
     show_on_dirs = true,
     show_on_open_dirs = true,
+  },
+  live_filter = {
+    prefix = "[FILTER]: ",
+    always_show_folders = false,
   },
   on_attach = on_attach,
 })

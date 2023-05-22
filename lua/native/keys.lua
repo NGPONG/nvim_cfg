@@ -35,6 +35,7 @@ events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_NORMAL, 'k', '<NOP>')
   binder.keymap(binder.E_NORMAL, '<C-P>', '<NOP>')
   binder.keymap(binder.E_NORMAL, '+', '<NOP>')
+  binder.keymap({ binder.E_NORMAL, binder.E_VISUAL }, '<C-m>', '<NOP>')
   binder.keymap({ binder.E_NORMAL, binder.E_INSERT, binder.E_VISUAL }, '<C-J>', '<NOP>')
   binder.keymap({ binder.E_NORMAL, binder.E_INSERT, binder.E_VISUAL }, '<C-UP>', '<NOP>')
   binder.keymap({ binder.E_NORMAL, binder.E_INSERT, binder.E_VISUAL }, '<A-UP>', '<NOP>')
@@ -114,7 +115,7 @@ events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_COMMAND, '<C-K>', '<NOP>')
   binder.keymap(binder.E_COMMAND, '<C-J>', '<NOP>')
   binder.keymap(binder.E_COMMAND, '<C-H>', '<NOP>')
-  binder.keymap({ binder.E_NORMAL, binder.E_NORMAL }, ':', '<NOP>')
+  binder.keymap(binder.E_NORMAL, ':', '<NOP>')
 
   -- https://neovim.io/doc/user/cmdline.html#cmdline-completion
   binder.keymap(binder.E_COMMAND, '<C-L>', '<NOP>')
@@ -211,6 +212,10 @@ events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_NORMAL, '?', '<NOP>')
   binder.keymap(binder.E_NORMAL, 'n', '<NOP>')
   binder.keymap(binder.E_NORMAL, 'N', '<NOP>')
+
+  -- https://neovim.io/doc/user/change.html#shift-left-right
+  binder.keymap(binder.E_NORMAL, '<', '<NOP>')
+  binder.keymap(binder.E_NORMAL, '>', '<NOP>')
 
   -- 还不知道
   binder.keymap(binder.E_INSERT, '<C-l>', '<NOP>')
@@ -319,12 +324,12 @@ events.rg_on_nvim_enter(function ()
   -- search command
   binder.keymap(binder.E_NORMAL, '.', function()
     if vim.fn.getreg('/') ~= '' then
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('n', true, false, true), 'n', false)
+      tool.feedkeys('n')
     end
   end)
   binder.keymap(binder.E_NORMAL, ',', function()
     if vim.fn.getreg('/') ~= '' then
-      vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('N', true, false, true), 'n', false)
+      tool.feedkeys('N')
     end
   end)
   binder.keymap(binder.E_NORMAL, '?', function()

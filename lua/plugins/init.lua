@@ -1,7 +1,7 @@
 require 'plugins.manager'.init()
 
 require 'plugins.colorscheme'
-require 'plugins.nvim-tree'
+require 'plugins.neo-tree' --'plugins.nvim-tree'
 require 'plugins.neoscroll'
 require 'plugins.bufdelete'
 require 'plugins.bufferline'

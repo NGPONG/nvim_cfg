@@ -28,8 +28,6 @@ local events = require 'native.events'
 -- vim.keymap.set('n', 'x',     api.fs.cut,                            opts('Cut'))
 -- vim.keymap.set('n', 'y',     api.fs.copy.filename,                  opts('Copy Name'))
 -- vim.keymap.set('n', 'Y',     api.fs.copy.relative_path,             opts('Copy Relative Path'))
--- vim.keymap.set('n', 'W',     api.tree.collapse_all,                 opts('Collapse'))
--- vim.keymap.set('n', 'E',     api.tree.expand_all,                   opts('Expand All'))
 -- vim.keymap.set('n', 'P',     api.node.navigate.parent,              opts('Parent Directory'))
 -- vim.keymap.set('n', 'r',     api.fs.rename,                         opts('Rename'))
 
@@ -48,6 +46,11 @@ local function key_opts(bufnr, desc, other)
   local def = { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
   local fin = tools.tbl_r_extend(def, other or {})
   return fin
+end
+
+local function open_tab_silent(node)
+  api.node.open.tab(node)
+  vim.cmd.tabprev()
 end
 ------------------------------------------------------------------------------------------------
 
@@ -78,7 +81,11 @@ end)
 
 -- 绑定临时的key
 events.rg_on_tree_setup(function (bufnr)
+  binder.keymap(binder.E_NORMAL, 'cd', api.tree.change_root_to_node, key_opts(bufnr, 'CD'))
   binder.keymap(binder.E_NORMAL, '<C-f>', api.live_filter.start, key_opts(bufnr, 'Filter'))
+  binder.keymap(binder.E_NORMAL, 'e', api.tree.expand_all, key_opts(bufnr, 'Expand All'))
+  binder.keymap(binder.E_NORMAL, 'E', api.tree.collapse_all, key_opts(bufnr, 'Collapse'))
+  binder.keymap(binder.E_NORMAL, 'ts', open_tab_silent, key_opts(bufnr, 'Open tab'))
   binder.keymap(binder.E_NORMAL, 'sv', api.node.open.vertical, key_opts(bufnr, 'Vertical Split'))
   binder.keymap(binder.E_NORMAL, 'sh', api.node.open.horizontal, key_opts(bufnr, 'Horizontal Split'))
   binder.keymap(binder.E_NORMAL, 's=', '<CMD>NvimTreeResize +5<CR>', key_opts(bufnr, 'Resize nvim-tree +5 width'))
