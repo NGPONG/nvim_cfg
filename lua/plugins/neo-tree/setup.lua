@@ -37,7 +37,7 @@ local function keymap_rebind_cfg()
   }
 end
 
-local function fix_942_cfg()
+local function fix942_cfg()
   -- https://github.com/nvim-neo-tree/neo-tree.nvim/issues/942
   return {
     git_status_async = false,
@@ -47,7 +47,7 @@ local function fix_942_cfg()
   }
 end
 
-local function fix_337_cfg()
+local function fix337_cfg()
   -- https://github.com/nvim-neo-tree/neo-tree.nvim/issues/337
   return {
     enable_git_status = true,
@@ -57,7 +57,7 @@ local function fix_337_cfg()
   }
 end
 
-local function icon_cfg()
+local function fixicon_cfg()
   return {
     default_component_configs = {
       indent = {
@@ -219,15 +219,14 @@ local function cfg()
 
   cfg = tool.tbl_r_deepextend(keymap_rebind_cfg(), cfg)
   cfg = tool.tbl_r_deepextend(keymap_remove_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(fix_337_cfg(), cfg)
-  --cfg = tool.tbl_r_deepextend(fix_942_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(icon_cfg(), cfg)
+  cfg = tool.tbl_r_deepextend(fix337_cfg(), cfg)
+  --cfg = tool.tbl_r_deepextend(fix942_cfg(), cfg)
+  cfg = tool.tbl_r_deepextend(fixicon_cfg(), cfg)
 
   return cfg
 end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-logger.info(cfg())
 require("neo-tree").setup(cfg())
 ------------------------------------------------------------------------------------------------
