@@ -56,6 +56,6 @@ require('lualine').setup {
     lualine_y = {'progress'},
     lualine_z = {'location'}
   },
-  extensions = {'nvim-tree'}
+  extensions = {'neo-tree'}
 }
 -------------------------------------------------------------------------------------

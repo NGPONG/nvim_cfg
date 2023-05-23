@@ -18,8 +18,8 @@ require("bufferline").setup({
     offsets = {
       {
         filetype = "neo-tree",
-        text = "FILE EXPLOREER",
-        highlight = "Directory",
+        text = "EXPLORER",
+        --highlight = "Directory",
         text_align = "center",
         padding = 0,
         separator = '|',
