@@ -1,6 +1,6 @@
 ------------------------------------------------------------------------------------------------
 -- TUTORIAL:
---  1. https://github.com/akinsho/bufferline.nvim
+--  1. https://github.com/akinsho/require('bufferline').nvim
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -15,6 +15,7 @@ require("bufferline").setup({
       return string.format('%s·%s', opts.ordinal, opts.lower(opts.id))
     end,
     show_tab_indicators = true,
+    enforce_regular_tabs = false, -- 标签长度是否保持一致
     offsets = {
       {
         filetype = "neo-tree",
@@ -25,6 +26,10 @@ require("bufferline").setup({
         separator = '|',
       }
     },
+    --style_preset = {
+    --  require('bufferline').style_preset.no_italic,
+    --  require('bufferline').style_preset.no_bold
+    --},
   },
   highlights = {
     offset_separator = {

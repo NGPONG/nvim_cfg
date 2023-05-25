@@ -84,6 +84,11 @@ _G.packer_plugins = {
     path = "/home/ngpong/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
     url = "https://github.com/akinsho/bufferline.nvim"
   },
+  ["diffview.nvim"] = {
+    loaded = true,
+    path = "/home/ngpong/.local/share/nvim/site/pack/packer/start/diffview.nvim",
+    url = "https://github.com/sindrets/diffview.nvim"
+  },
   ["gruvbox.nvim"] = {
     loaded = true,
     path = "/home/ngpong/.local/share/nvim/site/pack/packer/start/gruvbox.nvim",

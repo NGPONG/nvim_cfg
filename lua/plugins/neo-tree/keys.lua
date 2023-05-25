@@ -41,6 +41,8 @@ function M.rm_global_keymaps(...)
     ['bs'] = function(...) end,
     ['bp'] = function(...) end,
     ['bc'] = function(...) end,
+    ['B<'] = function(...) end,
+    ['B>'] = function(...) end,
     ['u'] = function(...) end,
   }
 end
@@ -100,6 +102,7 @@ end
 events.rg_on_nvim_enter(function ()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
   binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
+  binder.keymap(binder.E_NORMAL, '<CR>', '<NOP>')
 end)
 
 -- 绑定全局的key

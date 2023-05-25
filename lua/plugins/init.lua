@@ -7,5 +7,6 @@ require 'plugins.bufdelete'
 require 'plugins.bufferline'
 require 'plugins.indent-blankline'
 require 'plugins.lualine'
+require 'plugins.diffview'
 
 require 'plugins.manager'.laungh()
