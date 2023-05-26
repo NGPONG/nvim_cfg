@@ -58,7 +58,7 @@ require('lualine').setup {
         'diff',
         symbols = {
           added = ' ',
-          modified = '󰝤 ',
+          modified = ' ',
           removed = ' ',
         },
         padding = {

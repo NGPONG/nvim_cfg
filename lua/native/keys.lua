@@ -168,7 +168,7 @@ events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_INSERT, '<C-{>', '<NOP>')
   binder.keymap(binder.E_INSERT, '<A-[>', '<NOP>')
   binder.keymap(binder.E_INSERT, '<A-]>', '<NOP>')
-
+ 
   -- https://neovim.io/doc/user/vimindex.html#%5B
   binder.keymap(binder.E_NORMAL, '[', '<NOP>')
   binder.keymap(binder.E_NORMAL, ']', '<NOP>')
