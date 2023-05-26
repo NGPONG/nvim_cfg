@@ -4,39 +4,15 @@
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local colors = {
-  blue   = '#80a0ff',
-  cyan   = '#79dac8',
-  black  = '#080808',
-  white  = '#c6c6c6',
-  red    = '#ff5189',
-  violet = '#d183e8',
-  grey   = '#303030',
-}
+local logger = require 'utils.log'
+------------------------------------------------------------------------------------------------
 
-local bubbles_theme = {
-  normal = {
-    a = { fg = colors.black, bg = colors.violet },
-    b = { fg = colors.white, bg = colors.grey },
-    c = { fg = colors.black, bg = colors.black },
-  },
-
-  insert = { a = { fg = colors.black, bg = colors.blue } },
-  visual = { a = { fg = colors.black, bg = colors.cyan } },
-  replace = { a = { fg = colors.black, bg = colors.red } },
-
-  inactive = {
-    a = { fg = colors.white, bg = colors.black },
-    b = { fg = colors.white, bg = colors.black },
-    c = { fg = colors.black, bg = colors.black },
-  },
-}
-
+------------------------------------------------------------------------------------------------
 require('lualine').setup {
   options = {
-    theme = 'gruvbox_dark',
-    section_separators = { left = " ", right = "" },
-    component_separators = { left = '', right = '' },
+    theme = 'auto',
+    section_separators = { left = "", right = "" },
+    component_separators = { left = '', right = '' },
     disabled_filetypes = {     -- Filetypes to disable lualine for.
       statusline = {},         -- only ignores the ft for statusline.
       winbar = {},             -- only ignores the ft for winbar.
@@ -48,13 +24,145 @@ require('lualine').setup {
       winbar = 1000
     }
   },
+  inactive_sections = {
+    lualine_a = {},
+    lualine_b = {},
+    lualine_c = {},
+    lualine_x = {},
+    lualine_y = {},
+    lualine_z = {}
+  },
   sections = {
-    lualine_a = { 'mode' },
-    lualine_b = { 'branch' },
-    lualine_c = { { 'filename', path = 3, } },
-    lualine_x = {'encoding', 'fileformat', 'filetype'},
-    lualine_y = {'progress'},
-    lualine_z = {'location'}
+    lualine_a = {
+      {
+        'mode',
+        padding = {
+          left = 1,
+          right = 1,
+        },
+      },
+    },
+    lualine_b = {
+
+    },
+    lualine_c = {
+      {
+        'branch',
+        padding = {
+          left = 1,
+          right = 1,
+        },
+        color = { fg = require("gruvbox.palette").get_base_colors(vim.o.background, 'soft').neutral_purple, gui = 'bold' },
+      },
+      {
+        'diff',
+        symbols = {
+          added = ' ',
+          modified = '󰝤 ',
+          removed = ' ',
+        },
+        padding = {
+          left = 0,
+          right = 1,
+        },
+      },
+      {
+        'diagnostics',
+        diagnostics_color = {
+          color_error = {
+            fg = "#ec5f67"
+          },
+          color_info = {
+            fg = "#008080"
+          },
+          color_warn = {
+            fg = "#ECBE7B"
+          }
+        },
+        sources = { "nvim_diagnostic" },
+        symbols = {
+          error = " ",
+          info = " ",
+          warn = " "
+        }
+      },
+      {
+        function()
+          return '%='
+        end,
+      },
+      {
+        function()
+          local msg = 'No Active Lsp'
+          local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+          local clients = vim.lsp.get_active_clients()
+          if next(clients) == nil then
+            return msg
+          end
+          for _, client in ipairs(clients) do
+            local filetypes = client.config.filetypes
+            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+              return client.name
+            end
+          end
+          return msg
+        end,
+        icon = ' LSP:',
+        color = { fg = require("gruvbox.palette").get_base_colors(vim.o.background, 'soft').gray, gui = 'bold' },
+      }
+    },
+    lualine_x = {
+      {
+        'filetype',
+        padding = {
+          left = 1,
+          right = 0,
+        },
+      },
+      {
+        function ()
+          return ''
+        end,
+        padding = {
+          left = 1,
+          right = 1,
+        },
+      },
+      {
+        'encoding',
+        padding = {
+          left = 0,
+          right = 1,
+        },
+      }
+    },
+    lualine_y = {
+    },
+    lualine_z = {
+      {
+        'location',
+        padding = {
+          left = 1,
+          right = 0,
+        },
+      },
+      {
+        'progress',
+        padding = {
+          left = 0,
+          right = 0,
+        },
+      },
+      {
+        function ()
+          return ''
+        end,
+        padding = {
+          left = 1,
+          right = 1,
+        },
+      }
+    }
   },
   extensions = {'neo-tree'}
 }
