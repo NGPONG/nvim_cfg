@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------------------------
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
+local helper = require 'plugins.neo-tree.helper'
 local events = require 'native.events'
 local binder = require 'utils.keybinder'
 ------------------------------------------------------------------------------------------------
@@ -37,7 +38,6 @@ function M.rm_global_keymaps(...)
     ['b.'] = function(...) end,
     ['b,'] = function(...) end,
     ['bm'] = function(...) end,
-    ['bm'] = function(...) end,
     ['bs'] = function(...) end,
     ['bp'] = function(...) end,
     ['bc'] = function(...) end,
@@ -63,12 +63,12 @@ function M.set_global_keymaps(...)
     ['sv'] = 'split_with_window_picker',
     ['sh'] = 'vsplit_with_window_picker',
     ['ts'] = 'open_tabnew',
-    ["gA"]  = "git_add_all",
-    ["gu"] = "git_unstage_file",
-    ["ga"] = "git_add_file",
-    ["gr"] = "git_revert_file",
-    ["gc"] = "git_commit",
-    ["gp"] = "git_push",
+    ['gA']  = 'git_add_all',
+    ['gu'] = 'git_unstage_file',
+    ['ga'] = 'git_add_file',
+    ['gr'] = 'git_revert_file',
+    ['gc'] = 'git_commit',
+    ['gp'] = 'git_push',
   }
 end
 
@@ -98,14 +98,12 @@ end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
--- 移除全局的key
 events.rg_on_nvim_enter(function ()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
   binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
   binder.keymap(binder.E_NORMAL, '<CR>', '<NOP>')
 end)
 
--- 绑定全局的key
 events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_NORMAL, '<C-m>', '<CMD>Neotree action=focus toggle=true<CR>', { remap = false, silent = true })
 end)

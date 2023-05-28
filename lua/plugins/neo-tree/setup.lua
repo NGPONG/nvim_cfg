@@ -87,10 +87,10 @@ local function fixicon_cfg()
           renamed   = "󰁕",-- this can only be used in the git_status source
           -- Status type
           untracked = "",
-          ignored   = "",
-          unstaged  = "󰄱",
-          staged    = "",
-          conflict  = "",
+          ignored   = "",
+          unstaged  = "",
+          staged    = "",
+          conflict  = "",
         }
       },
     },
@@ -179,7 +179,7 @@ local function cfg()
       bind_to_cwd = true,
       follow_current_file = true,
       group_empty_dirs = false,
-      
+
     },
     buffers = {
       bind_to_cwd = true,
@@ -203,15 +203,15 @@ local function cfg()
     },
     event_handlers = {
       {
-        event = "neo_tree_buffer_enter",
-        handler = function()
-          tool.hide_cursor()
+        event = 'neo_tree_window_after_open',
+        handler = function ()
+          events.do_on_open_tree()
         end
       },
       {
-        event = "neo_tree_buffer_leave",
-        handler = function()
-          tool.unhide_cursor()
+        event = 'neo_tree_window_after_close',
+        handler = function ()
+          events.do_on_close_tree()
         end
       }
     },

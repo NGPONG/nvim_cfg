@@ -1,7 +1,10 @@
 local M = {}
 
+------------------------------------------------------------------------------------------------
 local logger = require('utils.log')
+------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------
 function M.tbl_dump(o)
    if type(o) == 'table' then
       local s = '{ '
@@ -67,8 +70,16 @@ function M.unhide_cursor()
    end
 end
 
+function M.is_cursor_hide()
+   return vim.o.guicursor == "a:NGPONGHiddenCursor"
+end
+
 function M.feedkeys(key)
    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'n', false)
+end
+
+function M.get_bufnr(...)
+   return vim.api.nvim_get_current_buf and vim.api.nvim_get_current_buf() or vim.fn.bufnr()
 end
 
 -- local lastinput_key = ''
@@ -89,5 +100,6 @@ end
 -- function M.get_lastrelease_key()
 --    return lastrelease_key
 -- end
+------------------------------------------------------------------------------------------------
 
 return M

@@ -1,14 +1,14 @@
 local actions = require("diffview.actions")
 
 require("diffview").setup({
-  diff_binaries = false,    -- Show diffs for binaries
-  enhanced_diff_hl = false, -- See ':h diffview-config-enhanced_diff_hl'
-  git_cmd = { "git" },      -- The git executable followed by default args.
-  hg_cmd = { "hg" },        -- The hg executable followed by default args.
-  use_icons = true,         -- Requires nvim-web-devicons
-  show_help_hints = true,   -- Show hints for how to open the help panel
-  watch_index = true,       -- Update views and index buffers when the git index changes.
-  icons = {                 -- Only applies when use_icons is true.
+  diff_binaries = false,
+  enhanced_diff_hl = false,
+  git_cmd = { "git" },
+  hg_cmd = { "hg" },
+  use_icons = true,
+  show_help_hints = true,
+  watch_index = true,
+  icons = {
     folder_closed = "",
     folder_open = "",
   },
@@ -18,47 +18,35 @@ require("diffview").setup({
     done = "✓",
   },
   view = {
-    -- Configure the layout and behavior of different types of views.
-    -- Available layouts:
-    --  'diff1_plain'
-    --    |'diff2_horizontal'
-    --    |'diff2_vertical'
-    --    |'diff3_horizontal'
-    --    |'diff3_vertical'
-    --    |'diff3_mixed'
-    --    |'diff4_mixed'
-    -- For more info, see ':h diffview-config-view.x.layout'.
     default = {
-      -- Config for changed files, and staged files in diff views.
-      layout = "diff3_horizontal",
-      winbar_info = false,          -- See ':h diffview-config-view.x.winbar_info'
+      layout = "diff2_horizontal",
+      winbar_info = true,
     },
     merge_tool = {
-      -- Config for conflicted files in diff views during a merge or rebase.
       layout = "diff3_horizontal",
-      disable_diagnostics = true,   -- Temporarily disable diagnostics for conflict buffers while in the view.
-      winbar_info = true,           -- See ':h diffview-config-view.x.winbar_info'
+      disable_diagnostics = true,
+      winbar_info = true,
     },
     file_history = {
-      -- Config for changed files in file history views.
       layout = "diff2_horizontal",
-      winbar_info = false,          -- See ':h diffview-config-view.x.winbar_info'
+      winbar_info = true,
     },
   },
   file_panel = {
-    listing_style = "list",             -- One of 'list' or 'tree'
+    listing_style = "list",
     tree_options = {                    -- Only applies when listing_style is 'tree'
       flatten_dirs = true,              -- Flatten dirs that only contain one single dir
       folder_statuses = "only_folded",  -- One of 'never', 'only_folded' or 'always'.
     },
     win_config = {                      -- See ':h diffview-config-win_config'
+      type = 'split',
       position = "left",
-      width = 35,
+      width = 40,
       win_opts = {}
     },
   },
   file_history_panel = {
-    log_options = {   -- See ':h diffview-config-log_options'
+    log_options = {
       git = {
         single_file = {
           diff_merges = "combined",
@@ -72,24 +60,31 @@ require("diffview").setup({
         multi_file = {},
       },
     },
-    win_config = {    -- See ':h diffview-config-win_config'
+    win_config = {
+      type = 'split',
       position = "bottom",
       height = 16,
       win_opts = {}
     },
   },
   commit_log_panel = {
-    win_config = {   -- See ':h diffview-config-win_config'
+    win_config = {
       win_opts = {},
     }
   },
-  default_args = {    -- Default args prepended to the arg-list for the listed commands
+  default_args = {
     DiffviewOpen = {},
     DiffviewFileHistory = {},
   },
   hooks = {},         -- See ':h diffview-config-hooks'
   keymaps = {
     disable_defaults = true, -- Disable the default keymaps
+    file_panel = {
+      { "n", "<cr>", actions.select_entry, { desc = "Open the diff for the selected entry" } },
+    },
+    view = {
+      { "n", "gx",      actions.cycle_layout,                   { desc = "Cycle through available layouts." } }
+    },
     --view = {
     --  -- The `view` bindings are active in the diff buffers, only when the current
     --  -- tabpage is a Diffview.

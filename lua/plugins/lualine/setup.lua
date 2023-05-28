@@ -5,13 +5,14 @@
 
 ------------------------------------------------------------------------------------------------
 local logger = require 'utils.log'
+local tools = require 'utils.tool'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
 require('lualine').setup {
   options = {
     theme = 'auto',
-    section_separators = { left = "", right = "" },
+    section_separators = { left = '', right = '' },
     component_separators = { left = '', right = '' },
     disabled_filetypes = {     -- Filetypes to disable lualine for.
       statusline = {},         -- only ignores the ft for statusline.
@@ -35,6 +36,15 @@ require('lualine').setup {
   sections = {
     lualine_a = {
       {
+        function ()
+          return '🐂'
+        end,
+        padding = {
+          left = 1,
+          right = 0,
+        },
+      },
+      {
         'mode',
         padding = {
           left = 1,
@@ -53,12 +63,13 @@ require('lualine').setup {
           right = 1,
         },
         color = { fg = require("gruvbox.palette").get_base_colors(vim.o.background, 'soft').neutral_purple, gui = 'bold' },
+        icon = ''
       },
       {
         'diff',
         symbols = {
           added = ' ',
-          modified = ' ',
+          modified = ' ',
           removed = ' ',
         },
         padding = {
@@ -94,14 +105,10 @@ require('lualine').setup {
       {
         function()
           local msg = 'No Active Lsp'
-          local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
           local clients = vim.lsp.get_active_clients()
-          if next(clients) == nil then
-            return msg
-          end
-          for _, client in ipairs(clients) do
+          for _, client in ipairs(next(clients) and clients or {}) do
             local filetypes = client.config.filetypes
-            if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+            if filetypes and vim.fn.index(filetypes, vim.bo.filetype) ~= -1 then
               return client.name
             end
           end
@@ -117,16 +124,17 @@ require('lualine').setup {
         padding = {
           left = 1,
           right = 0,
-        },
+        }
       },
       {
         function ()
-          return ''
+          return '|'
         end,
         padding = {
           left = 1,
           right = 1,
         },
+        cond = function () return vim.bo.filetype ~= '' end
       },
       {
         'encoding',
@@ -134,6 +142,7 @@ require('lualine').setup {
           left = 0,
           right = 1,
         },
+        cond = function () return vim.bo.filetype ~= '' end
       }
     },
     lualine_y = {

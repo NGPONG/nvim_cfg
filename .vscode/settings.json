@@ -1,0 +1,13 @@
+{
+  "Lua.diagnostics.globals": [
+    "vim"
+  ],
+  "Lua.format.defaultConfig": {
+    "continuation_indent": "2",
+    "indent_size": "2",
+    "indent_style": "space"
+  },
+  "Lua.diagnostics.disable": [
+    "different-requires"
+  ]
+}

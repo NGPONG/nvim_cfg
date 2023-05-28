@@ -55,7 +55,6 @@ end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
--- 移除临时的key
 events.rg_on_tree_setup(function (bufnr)
   binder.keymap(binder.E_NORMAL, 'sv', '<NOP>', key_opts(bufnr, 'Disable <sv>'))
   binder.keymap(binder.E_NORMAL, 'sh', '<NOP>', key_opts(bufnr, 'Disable <sh>'))
@@ -79,7 +78,6 @@ events.rg_on_tree_setup(function (bufnr)
   binder.keymap(binder.E_NORMAL, 'v', '<NOP>', key_opts(bufnr, 'Disable <visual mode>'))
 end)
 
--- 绑定临时的key
 events.rg_on_tree_setup(function (bufnr)
   binder.keymap(binder.E_NORMAL, 'cd', api.tree.change_root_to_node, key_opts(bufnr, 'CD'))
   binder.keymap(binder.E_NORMAL, '<C-f>', api.live_filter.start, key_opts(bufnr, 'Filter'))
@@ -109,13 +107,11 @@ events.rg_on_tree_setup(function (bufnr)
   end, key_opts(bufnr, 'close window', { expr = true, remap = false }))
 end)
 
--- 移除全局的key
 events.rg_on_nvim_enter(function ()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
   binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
 end)
 
--- 绑定全局的key
 events.rg_on_nvim_enter(function ()
   binder.keymap(binder.E_NORMAL, '<C-m>', function()
     api.tree.toggle { find_file = false, current_window = false, focus = true, path = '', update_root = false }

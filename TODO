@@ -17,14 +17,15 @@ native key 下的 a 键还有 esc 键有问题
 bufferline lualine 配置 lsp 相关的提示?
 
 scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
+ -- 使用 neotree 替代则没有这个问题了
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
 https://github.com/SmiteshP/nvim-navic
 https://github.com/akinsho/toggleterm.nvim
-https://github.com/nvim-neo-tree/neo-tree.nvim
 https://www.reddit.com/r/neovim/comments/125i5pv/good_git_diff_plugin_with_neotree/
 https://github.com/rmagatti/auto-session
+https://github.com/folke/trouble.nvim
 
 nvim-cmp 的问题
 https://github.com/hrsh7th/nvim-cmp/issues/148
