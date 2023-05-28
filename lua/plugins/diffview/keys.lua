@@ -1,22 +1,21 @@
 ------------------------------------------------------------------------------------------------
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
-local helper = require 'plugins.neo-tree.helper'
-local events = require 'native.events'
 local binder = require 'utils.keybinder'
+local events = require 'native.events'
 ------------------------------------------------------------------------------------------------
 
 local M = {}
 
 ------------------------------------------------------------------------------------------------
-function M.mapping_opts(...)
-  return {
-    silent = true,
-    noremap = true,
-    nowait = true,
-  }
+local function key_opts(desc, other)
+  local def = { desc = 'nvim-tree: ' .. desc, noremap = true, silent = true, nowait = true }
+  local fin = tools.tbl_r_extend(def, other or {})
+  return fin
 end
+------------------------------------------------------------------------------------------------
 
+------------------------------------------------------------------------------------------------
 function M.rm_global_keymaps(...)
   return {
     ['sv'] = function(...) end,
@@ -99,13 +98,11 @@ end
 
 ------------------------------------------------------------------------------------------------
 events.rg_on_nvim_enter(function ()
-  -- https://neovim.io/doc/user/motion.html#up-down-motions
-  binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
-  binder.keymap(binder.E_NORMAL, '<CR>', '<NOP>')
+  binder.keymap(binder.E_NORMAL, 'gd', '<NOP>', key_opts('Disable gd'))
 end)
 
 events.rg_on_nvim_enter(function ()
-  binder.keymap(binder.E_NORMAL, '<C-m>', '<CMD>Neotree action=focus toggle=true<CR>', { remap = false, silent = true })
+  binder.keymap(binder.E_NORMAL, 'gd', 'DiffviewOpen', key_opts('Open Diffview', { remap = false }))
 end)
 ------------------------------------------------------------------------------------------------
 

@@ -1,4 +1,7 @@
-local actions = require("diffview.actions")
+local actions = require('diffview.actions')
+local helper = require('plugins.diffview.helper')
+local logger = require('utils.log')
+
 
 require("diffview").setup({
   diff_binaries = false,
@@ -76,14 +79,72 @@ require("diffview").setup({
     DiffviewOpen = {},
     DiffviewFileHistory = {},
   },
-  hooks = {},         -- See ':h diffview-config-hooks'
+
+-------------------------
+  hooks = {
+    view_opened = function ()
+      logger.info('view opened')
+    end,
+    view_closed = function ()
+      logger.info('view closed')
+    end
+  },
   keymaps = {
     disable_defaults = true, -- Disable the default keymaps
     file_panel = {
       { "n", "<cr>", actions.select_entry, { desc = "Open the diff for the selected entry" } },
+      { "n", "ga", function ()
+        local item = helper.infer_cur_file()
+
+        if not item or item.kind == 'staged' then
+          return
+        end
+
+        actions.toggle_stage_entry()
+      end, { desc = "Stage the selected entry" } },
+      { "n", "gu", function ()
+        local item = helper.infer_cur_file()
+
+        if not item or item.kind == 'working' then
+          return
+        end
+
+        actions.toggle_stage_entry()
+      end, { desc = "Unstage the selected entry" } },
+      { "n", "gr", function ()
+        local item = helper.infer_cur_file()
+
+        if not item or item.kind == 'staged' then
+          return
+        end
+
+        local msg = string.format("Are you sure you want to revert %s?", item.basename)
+        helper.confirm(msg, function(yes)
+          if yes then
+            actions.restore_entry()
+          end
+        end)
+      end, { desc = "Restore entry to the state on the left side" } },
+      { "n", "gc", function ()
+        helper.git_commit()
+      end, { desc = "Restore entry to the state on the left side" } },
+      { "n", "gp", function ()
+        helper.git_push()
+      end, { desc = "Restore entry to the state on the left side" } },
+      { "n", "tc", '<NOP>' },
     },
+-------------------------    
+
     view = {
-      { "n", "gx",      actions.cycle_layout,                   { desc = "Cycle through available layouts." } }
+      --{ "n", "gh", function ()
+      --  print('hello,world')
+      --end, {} },
+      { "n", "gx", actions.cycle_layout, { desc = "Cycle through available layouts." } },
+      { "n", "gc.", actions.prev_conflict, { desc = "In the merge-tool: jump to the previous conflict" } },
+      { "n", "gc,", actions.next_conflict, { desc = "In the merge-tool: jump to the next conflict" } },
+    },
+    file_history_panel = {
+      { "n", "go", actions.options, { desc = "Open the option panel" } },
     },
     --view = {
     --  -- The `view` bindings are active in the diff buffers, only when the current
@@ -139,10 +200,8 @@ require("diffview").setup({
     --  { "n", "o",              actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
     --  { "n", "l",              actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
     --  { "n", "<2-LeftMouse>",  actions.select_entry,                   { desc = "Open the diff for the selected entry" } },
-    --  { "n", "-",              actions.toggle_stage_entry,             { desc = "Stage / unstage the selected entry" } },
     --  { "n", "S",              actions.stage_all,                      { desc = "Stage all entries" } },
     --  { "n", "U",              actions.unstage_all,                    { desc = "Unstage all entries" } },
-    --  { "n", "X",              actions.restore_entry,                  { desc = "Restore entry to the state on the left side" } },
     --  { "n", "L",              actions.open_commit_log,                { desc = "Open the commit log panel" } },
     --  { "n", "zo",             actions.open_fold,                      { desc = "Expand fold" } },
     --  { "n", "h",              actions.close_fold,                     { desc = "Collapse fold" } },
