@@ -12,6 +12,8 @@
     * 再做一些自定义话，比如git的一些东西
     * lsp 提示？
 
+bufferline有些错误的配置忘记改掉就上传了，回去看一下
+
 native key 下的 a 键还有 esc 键有问题
 
 bufferline lualine 配置 lsp 相关的提示?
