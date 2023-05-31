@@ -18,8 +18,13 @@ native key 下的 a 键还有 esc 键有问题
 
 bufferline lualine 配置 lsp 相关的提示?
 
+-- 是因为 neo-tree 的 autocmd 导致 diffview 的执行不正确，需要排查下
+
 scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
  -- 使用 neotree 替代则没有这个问题了
+
+event 的代码应该简化
+
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context

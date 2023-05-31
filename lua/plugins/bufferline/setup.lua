@@ -9,8 +9,7 @@ require("bufferline").setup({
     mode = "buffers",
     show_buffer_close_icons = false,
     show_close_icon = true,
-    separator_style = {" ", " "},
-    get_element_icon = 'A',
+    separator_style = 'slope',
     numbers = function(opts)
       return string.format('%s·%s', opts.ordinal, opts.lower(opts.id))
     end,

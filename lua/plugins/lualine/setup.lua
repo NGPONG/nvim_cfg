@@ -124,7 +124,8 @@ require('lualine').setup {
         padding = {
           left = 1,
           right = 0,
-        }
+        },
+        cond = function () return vim.bo.filetype ~= '' and vim.opt.fileencoding:get() ~= '' end
       },
       {
         function ()
@@ -134,7 +135,7 @@ require('lualine').setup {
           left = 1,
           right = 1,
         },
-        cond = function () return vim.bo.filetype ~= '' end
+        cond = function () return vim.bo.filetype ~= '' and vim.opt.fileencoding:get() ~= '' end
       },
       {
         'encoding',
@@ -142,7 +143,7 @@ require('lualine').setup {
           left = 0,
           right = 1,
         },
-        cond = function () return vim.bo.filetype ~= '' end
+        cond = function () return vim.bo.filetype ~= '' and vim.opt.fileencoding:get() ~= '' end
       }
     },
     lualine_y = {
@@ -170,7 +171,7 @@ require('lualine').setup {
           left = 1,
           right = 1,
         },
-      }
+      },
     }
   },
   extensions = {'neo-tree'}

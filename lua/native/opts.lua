@@ -208,4 +208,20 @@ vim.go.showtabline = 2
 
 -- 设置字体
 vim.go.guifont = 'FiraCode Nerd Font Mono'
+--
+---- 禁用原生filetype插件所定义的keymaps
+---- 
+---- REF: https://neovim.io/doc/user/filetype.html#filetype-plugins
+--vim.g.no_plugin_maps = 1
+--
+---- 禁用 netrw
+----
+---- REF: https://www.reddit.com/r/neovim/comments/yckqsn/how_to_disable_netrw_in_favor_of_own_plugin/
+--vim.g.loaded_netrw = 1
+--vim.g.loaded_netrwPlugin = 1
+--
+---- 禁用 matchit
+----
+---- REF: https://github.com/neovim/neovim/blob/master/runtime/pack/dist/opt/matchit/plugin/matchit.vim
+--vim.g.loaded_matchit = 1
 ------------------------------------------------------------------------------------------------
