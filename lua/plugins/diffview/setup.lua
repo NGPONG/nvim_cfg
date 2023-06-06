@@ -18,8 +18,8 @@ local function hook_cfg()
       view_opened = function ()
         event.do_on_open_diffview()
       end,
-      view_closed = function ()
-        event.do_on_close_diffview()
+      view_closed = function (view)
+        event.do_on_close_diffview(view)
       end
     },
   }

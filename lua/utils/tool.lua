@@ -78,8 +78,34 @@ function M.feedkeys(key)
    vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, false, true), 'n', false)
 end
 
-function M.get_bufnr(...)
+function M.get_bufnr(_)
    return vim.api.nvim_get_current_buf and vim.api.nvim_get_current_buf() or vim.fn.bufnr()
+end
+
+function M.get_tabnr(_)
+   return vim.api.nvim_get_current_tabpage()
+end
+
+function M.get_win_list(...)
+   local args = {...}
+   return next(args) and vim.api.nvim_tabpage_list_wins(args[1]) or vim.api.nvim_tabpage_list_wins(0)
+end
+
+function M.get_buf_name(...)
+   local args = {...}
+   return next(args) and vim.api.nvim_buf_get_name(args[1]) or vim.api.nvim_buf_get_name(0)
+end
+
+function M.get_loaded_bufs()
+   local bufs_loaded = {}
+
+   for i, buf_hndl in ipairs(vim.api.nvim_list_bufs()) do
+       if vim.api.nvim_buf_is_loaded(buf_hndl) then
+           bufs_loaded[i] = buf_hndl
+       end
+   end
+
+   return bufs_loaded
 end
 
 -- local lastinput_key = ''

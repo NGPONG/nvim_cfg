@@ -1,30 +1,27 @@
--- nvim-tree 在获得焦点后删除鼠标的显示(让它更像一个文件浏览器，而不是一个 text editor)
-    * git 的提示
-    * lsp 的提示
-    * 能否将提示符对准左边？
-
---配置buffer-line
---  * explore 的宽度好像有点问题
+配置buffer-line
     * lsp 提示？
 
 配置lualine
---  * 看懂配置大概是干啥的
-    * 再做一些自定义话，比如git的一些东西
     * lsp 提示？
 
-bufferline有些错误的配置忘记改掉就上传了，回去看一下
+配置bufferline 
+    * lsp 相关的提示?
+
+配置diffview
+    * kemap的绑定
 
 native key 下的 a 键还有 esc 键有问题
-
-bufferline lualine 配置 lsp 相关的提示?
-
--- 是因为 neo-tree 的 autocmd 导致 diffview 的执行不正确，需要排查下
 
 scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
  -- 使用 neotree 替代则没有这个问题了
 
 event 的代码应该简化
 
+diffview不用，全局只能打开一个
+
+------ diffview 打了很多日志，需要 checkout 一下
+
+想要neovim更好看应该还要选择 kitty，或者等待 neovide 修复热键问题完成
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
@@ -37,6 +34,3 @@ https://github.com/folke/trouble.nvim
 nvim-cmp 的问题
 https://github.com/hrsh7th/nvim-cmp/issues/148
 https://github.com/hrsh7th/nvim-cmp/issues/598
-
-
-想要终端更好看应该还要用 kitty

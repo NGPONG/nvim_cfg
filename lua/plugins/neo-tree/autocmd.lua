@@ -6,53 +6,46 @@ local helper = require 'plugins.neo-tree.helper'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local group_id = vim.api.nvim_create_augroup("ngpong_neo-tree_group", { clear = true, })
-------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------------
-events.rg_on_open_tree(function ()
-  if #vim.api.nvim_get_autocmds({ group = group_id }) ~= 0 then
-    return
-  end
-
-  tools.hide_cursor()
+events.rg_on_open_tree(function()
+  local bufnr = helper.get_bufnr()
+  local group_id = helper.get_group_id()
 
   vim.api.nvim_create_autocmd('BufEnter', {
     group = group_id,
-    pattern = { '*' },
-    callback = function()
-      local _, is_focus = helper.get_status()
+    buffer = bufnr,
+    callback = function(_)
+      helper.hide_cursor()
+    end
+  })
 
-      if is_focus then
-        tools.hide_cursor()
-      else
-        tools.unhide_cursor()
-      end
+  vim.api.nvim_create_autocmd('BufLeave', {
+    group = group_id,
+    buffer = bufnr,
+    callback = function(_)
+      helper.unhide_cursor()
     end
   })
 
   vim.api.nvim_create_autocmd('ModeChanged', {
     group = group_id,
-    pattern = { '*' },
-    callback = function()
-      if not tools.is_cursor_hide() then
-        return
-      end
-
+    buffer = bufnr,
+    callback = function(_)
       if vim.api.nvim_get_mode().mode ~= 'n' then
-        tools.unhide_cursor()
+        helper.unhide_cursor()
       else
-        tools.hide_cursor()
+        helper.hide_cursor()
       end
     end
+  })
+
+  vim.api.nvim_exec_autocmds('BufEnter', {
+    group = group_id,
+    buffer = bufnr,
   })
 end)
 
 events.rg_on_close_tree(function()
-  if #vim.api.nvim_get_autocmds({ group = group_id }) == 0 then
-    return
-  end
-
-  vim.api.nvim_clear_autocmds({ group = group_id })
+  helper.unhide_cursor()
+  helper.clear_autocmds()
 end)
 ------------------------------------------------------------------------------------------------

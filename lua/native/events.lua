@@ -84,9 +84,9 @@ function M.rg_on_close_diffview(fn)
   M.on_close_diffview_handlers = M.on_close_diffview_handlers or {}
   table.insert(M.on_close_diffview_handlers, fn)
 end
-function M.do_on_close_diffview()
-  for i, fn in pairs(M.on_close_diffview_handlers or {}) do
-    local status, err = pcall(fn)
+function M.do_on_close_diffview(view)
+  for _, fn in pairs(M.on_close_diffview_handlers or {}) do
+    local status, err = pcall(fn, view)
     if status == false then
       logger.info(err)
     end
