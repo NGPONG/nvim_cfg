@@ -153,7 +153,7 @@ require('lualine').setup {
         'location',
         padding = {
           left = 1,
-          right = 0,
+          right = 1,
         },
       },
       {

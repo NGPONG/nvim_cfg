@@ -17,7 +17,7 @@ scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
 
 event 的代码应该简化
 
-- diffview 的TabClosed函数有问题，需要自己手动改下
+lualine 的位置可以随着进度和变绿
 
 想要neovim更好看应该还要选择 kitty，或者等待 neovide 修复热键问题完成
 
