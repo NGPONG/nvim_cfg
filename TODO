@@ -32,3 +32,5 @@ https://github.com/folke/trouble.nvim
 nvim-cmp 的问题
 https://github.com/hrsh7th/nvim-cmp/issues/148
 https://github.com/hrsh7th/nvim-cmp/issues/598
+
+neotree 还有 diffview 的 git commit 应该还要支持覆盖上一提交的 commit，得研究下 neotree 的 ui
