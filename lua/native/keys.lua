@@ -238,7 +238,6 @@ end)
 
 -- 移除临时 keymap
 events.rg(event_name.BUFFER_READ, function ()
-  logger.info('hello,world')
   -- https://neovim.io/doc/user/insert.html#inserting
   binder.keymap(mode.VISUAL, 'a', '<NOP>', { buffer = true })
 end)
@@ -358,8 +357,7 @@ events.rg(event_name.VIM_ENTER, function ()
 end)
 
 -- 设置临时 keymap
-events.rg(event_name.BUFFER_READ, function ()
-  logger.info('hello,world')
+events.rg(event_name.BUFFER_READ, function()
   -- 改善 <HOME> 的功能
   --  1. 当前光标所在位置前面的字符不是全部 blank space 的情况下则跳跃到第一个字符所在位置
   --  2. 当前光标所在位置前面的字符全部是 blank space 的情况下则跳跃到第一列所在位置

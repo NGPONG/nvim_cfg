@@ -85,8 +85,8 @@ function M.new_groupid(key)
   return group_id
 end
 
-function M.get_nsid()
-  return vim.api.nvim_create_namespace('ngpong_diffview_ns')
+function M.get_nsid(key)
+  return vim.api.nvim_create_namespace('ngpong_diffview_ns_' .. key)
 end
 
 function M.select_entry()

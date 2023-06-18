@@ -8,7 +8,7 @@
 local logger = require 'utils.log'
 local tools = require 'utils.tool'
 local events = require 'native.events'
-local event_name = require 'native.events'
+local event_name = require 'native.events'.Name
 local keymap = require 'plugins.diffview.keys'
 ------------------------------------------------------------------------------------------------
 

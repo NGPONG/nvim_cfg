@@ -8,7 +8,9 @@ local helper = require 'plugins.diffview.helper'
 
 ------------------------------------------------------------------------------------------------
 events.rg(event_name.OPEN_DIFFVIEW, function (view)
+  local ns_id = helper.get_nsid(math.random())
   vim.on_key(function(_)
+    logger.info(1)
     local tabnr = helper.get_tabnr()
     local bufnr = helper.get_diffview_bufnr()
     local group_id = helper.new_groupid(tabnr)
@@ -46,8 +48,8 @@ events.rg(event_name.OPEN_DIFFVIEW, function (view)
       buffer = bufnr,
     })
 
-    vim.on_key(nil, helper.get_nsid())
-  end, helper.get_nsid())
+    vim.on_key(nil, ns_id)
+  end, ns_id)
 end)
 
 events.rg(event_name.CLOSE_DIFFVIEW, function(view)
@@ -60,8 +62,10 @@ events.rg(event_name.CLOSE_DIFFVIEW, function(view)
 end)
 
 events.rg(event_name.OPEN_DIFFVIEW, function (view)
+  local ns_id = helper.get_nsid(math.random())
   vim.on_key(function(_)
     logger.info(2)
-  end, helper.get_nsid())
+    vim.on_key(nil, ns_id)
+  end, ns_id)
 end)
 ------------------------------------------------------------------------------------------------
