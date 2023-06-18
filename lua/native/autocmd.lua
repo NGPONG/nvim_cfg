@@ -8,6 +8,8 @@
 ------------------------------------------------------------------------------------------------
 local tool = require 'utils.tool'
 local logger = require 'utils.log'
+local events = require('native.events')
+local event_name = require('native.events').Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -82,7 +84,7 @@ vim.api.nvim_create_autocmd('VimEnter', {
   group = group_id,
   pattern = { '*' },
   callback = function()
-    require('native.events').do_on_nvim_enter()
+    events.emit(event_name.VIM_ENTER)
   end
 })
 
@@ -91,7 +93,7 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   group = group_id,
   pattern = { '*' },
   callback = function()
-    require('native.events').do_on_buffer_read()
+    events.emit(event_name.BUFFER_READ)
   end
 })
 ------------------------------------------------------------------------------------------------

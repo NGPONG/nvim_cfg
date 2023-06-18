@@ -10,8 +10,6 @@
 配置diffview
     * kemap的绑定
 
-native key 下的 a 键还有 esc 键有问题
-
 scratch 文件是什么？nvim-tree会生成一些，如何阻止它的生成？
  -- 使用 neotree 替代则没有这个问题了
 
@@ -20,6 +18,18 @@ event 的代码应该简化
 lualine 的位置可以随着进度和变绿
 
 想要neovim更好看应该还要选择 kitty，或者等待 neovide 修复热键问题完成
+
+neotree 关于文件操作，要不要映射一些command？比如ADD，DELETE那些
+
+diffview 我觉得还是用 command 打开好一点，但是前提要将 command 变得像 vscode 一样好用，noice.nvim 和 nvim-cmp 应该可以解决
+
+有没有办法在diffview里面切换buffer时候能够自动切换到buffer的修改状态
+
+需要思考下git操作是用h好还是g好，因为g也可以用于跳转(goto)的意思，或者映射一些全局(global)的key
+
+研究下协程库
+
+在什么都不打开文件的情况下无法触发一下临时key的设置，这个和 event 有关
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context

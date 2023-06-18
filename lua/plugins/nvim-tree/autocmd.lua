@@ -1,6 +1,7 @@
 ------------------------------------------------------------------------------------------------
 local view = require 'nvim-tree.view'
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
 local tool = require 'utils.tool'
 ------------------------------------------------------------------------------------------------
@@ -10,7 +11,7 @@ local group_id = vim.api.nvim_create_augroup("ngpong_nvim-tree_group", { clear =
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_open_tree(function ()
+events.rg(event_name.OPEN_TREE, function ()
   if #vim.api.nvim_get_autocmds({ group = group_id }) ~= 0 then
     return
   end
@@ -30,7 +31,7 @@ events.rg_on_open_tree(function ()
   })
 end)
 
-events.rg_on_close_tree(function()
+events.rg(event_name.CLOSE_TREE, function()
   if #vim.api.nvim_get_autocmds({ group = group_id }) == 0 then
     return
   end

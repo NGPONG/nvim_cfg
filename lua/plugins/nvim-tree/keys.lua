@@ -1,11 +1,13 @@
 ------------------------------------------------------------------------------------------------
 local binder = require 'utils.keybinder'
+local mode = require 'utils.keybinder'.Mode
 local tools = require 'utils.tool'
 local api = require 'nvim-tree.api'
 local view = require 'nvim-tree.view'
 local lib = require 'nvim-tree.lib'
 local logger = require 'utils.log'
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -55,70 +57,70 @@ end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_tree_setup(function (bufnr)
-  binder.keymap(binder.E_NORMAL, 'sv', '<NOP>', key_opts(bufnr, 'Disable <sv>'))
-  binder.keymap(binder.E_NORMAL, 'sh', '<NOP>', key_opts(bufnr, 'Disable <sh>'))
-  binder.keymap(binder.E_NORMAL, 's=', '<NOP>', key_opts(bufnr, 'Disable <s=>'))
-  binder.keymap(binder.E_NORMAL, 's-', '<NOP>', key_opts(bufnr, 'Disable <s->'))
-  binder.keymap(binder.E_NORMAL, 's0', '<NOP>', key_opts(bufnr, 'Disable <s0>'))
-  binder.keymap(binder.E_NORMAL, 'sc', '<NOP>', key_opts(bufnr, 'Disable <sc>'))
-  binder.keymap(binder.E_NORMAL, 's9', '<NOP>', key_opts(bufnr, 'Disable <s9>'))
-  binder.keymap(binder.E_NORMAL, 'ts', '<NOP>', key_opts(bufnr, 'Disable <ts>'))
-  binder.keymap(binder.E_ALL, 'z', '<NOP>', key_opts(bufnr, 'Disable <z>'))
-  binder.keymap(binder.E_NORMAL, 'Z', '<NOP>', key_opts(bufnr, 'Disable <Z>'))
-  binder.keymap(binder.E_ALL, 'x', '<NOP>', key_opts(bufnr, 'Disable <x>'))
-  binder.keymap(binder.E_NORMAL, 'X', '<NOP>', key_opts(bufnr, 'Disable <X>'))
-  binder.keymap({ binder.E_NORMAL, binder.E_VISUAL }, 'c', '<NOP>', key_opts(bufnr, 'Disable <c>'))
-  binder.keymap(binder.E_NORMAL, 'C', '<NOP>', key_opts(bufnr, 'Disable <C>'))
-  binder.keymap(binder.E_NORMAL, 'r', '<NOP>', key_opts(bufnr, 'Disable <r>'))
-  binder.keymap(binder.E_NORMAL, 'a', '<NOP>', key_opts(bufnr, 'Disable <a>'))
-  binder.keymap(binder.E_VISUAL, 'a', '<NOP>', key_opts(bufnr, 'Disable <a>'))
-  binder.keymap(binder.E_NORMAL, 'A', '<NOP>', key_opts(bufnr, 'Disable <A>'))
-  binder.keymap(binder.E_NORMAL, '<ESC>', '<NOP>', key_opts(bufnr, 'Disable <ESC>'))
-  binder.keymap(binder.E_NORMAL, 'v', '<NOP>', key_opts(bufnr, 'Disable <visual mode>'))
+events.rg(event_name.TREE_SETUP, function (bufnr)
+  binder.keymap(mode.NORMAL, 'sv', '<NOP>', key_opts(bufnr, 'Disable <sv>'))
+  binder.keymap(mode.NORMAL, 'sh', '<NOP>', key_opts(bufnr, 'Disable <sh>'))
+  binder.keymap(mode.NORMAL, 's=', '<NOP>', key_opts(bufnr, 'Disable <s=>'))
+  binder.keymap(mode.NORMAL, 's-', '<NOP>', key_opts(bufnr, 'Disable <s->'))
+  binder.keymap(mode.NORMAL, 's0', '<NOP>', key_opts(bufnr, 'Disable <s0>'))
+  binder.keymap(mode.NORMAL, 'sc', '<NOP>', key_opts(bufnr, 'Disable <sc>'))
+  binder.keymap(mode.NORMAL, 's9', '<NOP>', key_opts(bufnr, 'Disable <s9>'))
+  binder.keymap(mode.NORMAL, 'ts', '<NOP>', key_opts(bufnr, 'Disable <ts>'))
+  binder.keymap(mode.ALL, 'z', '<NOP>', key_opts(bufnr, 'Disable <z>'))
+  binder.keymap(mode.NORMAL, 'Z', '<NOP>', key_opts(bufnr, 'Disable <Z>'))
+  binder.keymap(mode.ALL, 'x', '<NOP>', key_opts(bufnr, 'Disable <x>'))
+  binder.keymap(mode.NORMAL, 'X', '<NOP>', key_opts(bufnr, 'Disable <X>'))
+  binder.keymap({ mode.NORMAL, mode.VISUAL }, 'c', '<NOP>', key_opts(bufnr, 'Disable <c>'))
+  binder.keymap(mode.NORMAL, 'C', '<NOP>', key_opts(bufnr, 'Disable <C>'))
+  binder.keymap(mode.NORMAL, 'r', '<NOP>', key_opts(bufnr, 'Disable <r>'))
+  binder.keymap(mode.NORMAL, 'a', '<NOP>', key_opts(bufnr, 'Disable <a>'))
+  binder.keymap(mode.VISUAL, 'a', '<NOP>', key_opts(bufnr, 'Disable <a>'))
+  binder.keymap(mode.NORMAL, 'A', '<NOP>', key_opts(bufnr, 'Disable <A>'))
+  binder.keymap(mode.NORMAL, '<ESC>', '<NOP>', key_opts(bufnr, 'Disable <ESC>'))
+  binder.keymap(mode.NORMAL, 'v', '<NOP>', key_opts(bufnr, 'Disable <visual mode>'))
 end)
 
-events.rg_on_tree_setup(function (bufnr)
-  binder.keymap(binder.E_NORMAL, 'cd', api.tree.change_root_to_node, key_opts(bufnr, 'CD'))
-  binder.keymap(binder.E_NORMAL, '<C-f>', api.live_filter.start, key_opts(bufnr, 'Filter'))
-  binder.keymap(binder.E_NORMAL, 'e', api.tree.expand_all, key_opts(bufnr, 'Expand All'))
-  binder.keymap(binder.E_NORMAL, 'E', api.tree.collapse_all, key_opts(bufnr, 'Collapse'))
-  binder.keymap(binder.E_NORMAL, 'ts', open_tab_silent, key_opts(bufnr, 'Open tab'))
-  binder.keymap(binder.E_NORMAL, 'sv', api.node.open.vertical, key_opts(bufnr, 'Vertical Split'))
-  binder.keymap(binder.E_NORMAL, 'sh', api.node.open.horizontal, key_opts(bufnr, 'Horizontal Split'))
-  binder.keymap(binder.E_NORMAL, 's=', '<CMD>NvimTreeResize +5<CR>', key_opts(bufnr, 'Resize nvim-tree +5 width'))
-  binder.keymap(binder.E_NORMAL, 's-', '<CMD>NvimTreeResize -5<CR>', key_opts(bufnr, 'Resize nvim-tree -5 width'))
-  binder.keymap(binder.E_NORMAL, '<CR>', function()
+events.rg(event_name.TREE_SETUP, function (bufnr)
+  binder.keymap(mode.NORMAL, 'cd', api.tree.change_root_to_node, key_opts(bufnr, 'CD'))
+  binder.keymap(mode.NORMAL, '<C-f>', api.live_filter.start, key_opts(bufnr, 'Filter'))
+  binder.keymap(mode.NORMAL, 'e', api.tree.expand_all, key_opts(bufnr, 'Expand All'))
+  binder.keymap(mode.NORMAL, 'E', api.tree.collapse_all, key_opts(bufnr, 'Collapse'))
+  binder.keymap(mode.NORMAL, 'ts', open_tab_silent, key_opts(bufnr, 'Open tab'))
+  binder.keymap(mode.NORMAL, 'sv', api.node.open.vertical, key_opts(bufnr, 'Vertical Split'))
+  binder.keymap(mode.NORMAL, 'sh', api.node.open.horizontal, key_opts(bufnr, 'Horizontal Split'))
+  binder.keymap(mode.NORMAL, 's=', '<CMD>NvimTreeResize +5<CR>', key_opts(bufnr, 'Resize nvim-tree +5 width'))
+  binder.keymap(mode.NORMAL, 's-', '<CMD>NvimTreeResize -5<CR>', key_opts(bufnr, 'Resize nvim-tree -5 width'))
+  binder.keymap(mode.NORMAL, '<CR>', function()
     if nil ~= lib.get_node_at_cursor() then
         api.node.open.edit()
     end
   end, key_opts(bufnr, 'Open node'))
-  binder.keymap(binder.E_NORMAL, '<ESC>', function()
+  binder.keymap(mode.NORMAL, '<ESC>', function()
     if nil ~= require('nvim-tree.live-filter').filter then
       api.live_filter.clear()
     end
     vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<ESC>', true, false, true), 'n', false)
   end, key_opts(bufnr, 'Clean Filter or input <ESC>'))
-  binder.keymap(binder.E_NORMAL, 'sc', function()
+  binder.keymap(mode.NORMAL, 'sc', function()
     if view.is_visible() then
-      events.do_on_close_tree()
+      events.emit(event_name.CLOSE_TREE)
     end
     return '<CMD>wincmd c<CR>'
   end, key_opts(bufnr, 'close window', { expr = true, remap = false }))
 end)
 
-events.rg_on_nvim_enter(function ()
+events.rg(event_name.VIM_ENTER, function ()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
-  binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
+  binder.keymap(mode.NORMAL, '<C-m>', '<NOP>')
 end)
 
-events.rg_on_nvim_enter(function ()
-  binder.keymap(binder.E_NORMAL, '<C-m>', function()
+events.rg(event_name.VIM_ENTER, function ()
+  binder.keymap(mode.NORMAL, '<C-m>', function()
     api.tree.toggle { find_file = false, current_window = false, focus = true, path = '', update_root = false }
     if view.is_visible() then
-      events.do_on_open_tree()
+      events.emit(event_name.OPEN_TREE)
     else
-      events.do_on_close_tree()
+      events.emit(event_name.CLOSE_TREE)
     end
   end, { remap = false })
 end)

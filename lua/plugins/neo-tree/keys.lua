@@ -3,7 +3,9 @@ local tools = require 'utils.tool'
 local logger = require 'utils.log'
 local helper = require 'plugins.neo-tree.helper'
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 local binder = require 'utils.keybinder'
+local mode = require 'utils.keybinder'.Mode
 ------------------------------------------------------------------------------------------------
 
 local M = {}
@@ -91,21 +93,24 @@ function M.set_filesys_keymaps(...)
     ['g,'] = 'prev_git_modified',
     ['g.'] = 'next_git_modified',
     ['<C-f>'] = 'filter_on_submit',
-    ['a'] = 'add',
     ['h'] = 'toggle_hidden',
+
+    ['a'] = 'add',
   }
 end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_nvim_enter(function ()
+events.rg(event_name.VIM_ENTER, function ()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
-  binder.keymap(binder.E_NORMAL, '<C-m>', '<NOP>')
-  binder.keymap(binder.E_NORMAL, '<CR>', '<NOP>')
+  binder.keymap(mode.NORMAL, '<C-m>', '<NOP>')
+
+  -- <CR> 与 <C-m> 含义相同，故禁用掉该行为
+  binder.keymap(mode.NORMAL, '<CR>', '<NOP>')
 end)
 
-events.rg_on_nvim_enter(function ()
-  binder.keymap(binder.E_NORMAL, '<C-m>', '<CMD>Neotree action=focus toggle=true<CR>', { remap = false, silent = true })
+events.rg(event_name.VIM_ENTER, function ()
+  binder.keymap(mode.NORMAL, '<C-m>', '<CMD>Neotree action=focus toggle=true<CR>', { remap = false, silent = true })
 end)
 ------------------------------------------------------------------------------------------------
 

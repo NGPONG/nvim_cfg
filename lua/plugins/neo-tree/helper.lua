@@ -8,7 +8,7 @@ local logger = require('utils.log')
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-M.group_ids = {}
+local group_ids = {}
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -54,22 +54,26 @@ function M.get_bufnr()
   return tools.get_bufnr()
 end
 
-function M.clear_autocmds()
-  local tabnr = tools.get_tabnr()
-  local group_id = M.group_ids[tabnr]
-
-  vim.api.nvim_clear_autocmds({ group = group_id })
-
-  M.group_ids[tabnr] = nil
+function M.get_tabnr()
+  return tools.get_tabnr()
 end
 
-function M.get_group_id()
-  local tabnr = tools.get_tabnr()
-  local group_name = 'ngpong_neo-tree_group_' .. tabnr
+function M.pop_groupid(key)
+  local group_id = group_ids[key]
+
+  if group_id then
+    group_ids[key] = nil
+  end
+
+  return group_id
+end
+
+function M.new_groupid(key)
+  local group_name = 'ngpong_neo-tree_group_' .. key
 
   local group_id = vim.api.nvim_create_augroup(group_name, { clear = true, })
 
-  M.group_ids[tabnr] = group_id
+  group_ids[key] = group_id
 
   return group_id
 end

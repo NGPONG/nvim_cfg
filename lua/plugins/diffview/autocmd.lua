@@ -6,13 +6,13 @@ local helper = require 'plugins.diffview.helper'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_open_diffview(function ()
+events.rg_on_open_diffview(function (_)
   local ns_id = vim.api.nvim_create_namespace("ngpong_diffview_ns")
 
   -- 避开 diffview 的一些异步工作导致cursor无法正确设置
   vim.on_key(function(_)
-    local bufnr = helper.get_bufnr()
-    local group_id = helper.get_group_id()
+    local bufnr = helper.get_diffview_bufnr()
+    local group_id = helper.new_group_id()
 
     vim.api.nvim_create_autocmd('BufEnter', {
       group = group_id,

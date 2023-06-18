@@ -6,20 +6,21 @@
 
 ------------------------------------------------------------------------------------------------
 local logger = require 'utils.log'
-local tool = require 'utils.tool'
-local event = require 'native.events'
-local binder = require 'plugins.diffview.keys'
+local tools = require 'utils.tool'
+local events = require 'native.events'
+local event_name = require 'native.events'
+local keymap = require 'plugins.diffview.keys'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
 local function hook_cfg()
   return {
     hooks = {
-      view_opened = function ()
-        event.do_on_open_diffview()
+      view_opened = function (view)
+        events.emit(event_name.OPEN_DIFFVIEW, view)
       end,
       view_closed = function (view)
-        event.do_on_close_diffview(view)
+        events.emit(event_name.CLOSE_DIFFVIEW, view)
       end
     },
   }
@@ -29,7 +30,8 @@ local function keymap_rebind_cfg()
   return {
     keymaps = {
       disable_defaults = true,
-      file_panel = binder.set_filepanel_keymaps()
+      file_panel = keymap.set_filepanel_keymaps(),
+      view = keymap.set_view_keymaps(),
     }
   }
 end
@@ -113,8 +115,8 @@ local function cfg()
     },
   }
 
-  cfg = tool.tbl_r_deepextend(keymap_rebind_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(hook_cfg(), cfg)
+  cfg = tools.tbl_r_deepextend(keymap_rebind_cfg(), cfg)
+  cfg = tools.tbl_r_deepextend(hook_cfg(), cfg)
 
   return cfg
 end
@@ -122,3 +124,4 @@ end
 
 ------------------------------------------------------------------------------------------------
 require("diffview").setup(cfg())
+------------------------------------------------------------------------------------------------

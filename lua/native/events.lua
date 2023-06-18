@@ -1,96 +1,41 @@
 local M = {}
 
+-------------------------------------------------------------------------------------
 local logger = require 'utils.log'
+local tools = require 'utils.tool'
+-------------------------------------------------------------------------------------
 
-function M.rg_on_buffer_read(fn)
-  M.on_buffer_read_handlers = M.on_buffer_read_handlers or {}
-  table.insert(M.on_buffer_read_handlers, fn)
+-------------------------------------------------------------------------------------
+local event_handlers = {}
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+M.Name = tools.enum({
+  BUFFER_READ = 1,
+  VIM_ENTER = 2,
+  TREE_SETUP = 3,
+  OPEN_TREE = 4,
+  CLOSE_TREE = 5,
+  OPEN_DIFFVIEW = 6,
+  CLOSE_DIFFVIEW = 7,
+})
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+function M.rg(name, fn)
+  local handlers = event_handlers[name] or {}
+  table.insert(handlers, fn)
+  event_handlers[name] = handlers
 end
-function M.do_on_buffer_read()
-  for i, fn in pairs(M.on_buffer_read_handlers or {}) do
-    local status, err = pcall(fn)
-    if status == false then
-      logger.info(err)
+
+function M.emit(name, ...)
+  for i, fn in pairs(event_handlers[name] or {}) do
+    local status, err = pcall(fn, ...)
+    if not status then
+      logger.error(err)
     end
   end
 end
-
-function M.rg_on_nvim_enter(fn)
-  M.on_nvim_enter_handlers = M.on_nvim_enter_handlers or {}
-  table.insert(M.on_nvim_enter_handlers, fn)
-end
-function M.do_on_nvim_enter()
-  for i, fn in pairs(M.on_nvim_enter_handlers or {}) do
-    local status, err = pcall(fn)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
-
-function M.rg_on_tree_setup(fn)
-  M.on_tree_setup_handlers = M.on_tree_setup_handlers or {}
-  table.insert(M.on_tree_setup_handlers, fn)
-end
-function M.do_on_tree_setup(bufnr)
-  for i, fn in pairs(M.on_tree_setup_handlers or {}) do
-    local status, err = pcall(fn, bufnr)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
-
-function M.rg_on_open_tree(fn)
-  M.on_open_tree_handlers = M.on_open_tree_handlers or {}
-  table.insert(M.on_open_tree_handlers, fn)
-end
-function M.do_on_open_tree()
-  for i, fn in pairs(M.on_open_tree_handlers or {}) do
-    local status, err = pcall(fn)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
-
-function M.rg_on_close_tree(fn)
-  M.on_close_tree_handlers = M.on_close_tree_handlers or {}
-  table.insert(M.on_close_tree_handlers, fn)
-end
-function M.do_on_close_tree()
-  for i, fn in pairs(M.on_close_tree_handlers or {}) do
-    local status, err = pcall(fn)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
-
-function M.rg_on_open_diffview(fn)
-  M.on_open_diffview_handlers = M.on_open_diffview_handlers or {}
-  table.insert(M.on_open_diffview_handlers, fn)
-end
-function M.do_on_open_diffview()
-  for i, fn in pairs(M.on_open_diffview_handlers or {}) do
-    local status, err = pcall(fn)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
-
-function M.rg_on_close_diffview(fn)
-  M.on_close_diffview_handlers = M.on_close_diffview_handlers or {}
-  table.insert(M.on_close_diffview_handlers, fn)
-end
-function M.do_on_close_diffview(view)
-  for _, fn in pairs(M.on_close_diffview_handlers or {}) do
-    local status, err = pcall(fn, view)
-    if status == false then
-      logger.info(err)
-    end
-  end
-end
+-------------------------------------------------------------------------------------
 
 return M

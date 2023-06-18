@@ -1,15 +1,15 @@
 local M = {}
 
 -------------------------------------------------------------------------------------
-local inputs = require 'neo-tree.ui.inputs'
-local command = require 'neo-tree.sources.common.commands'
+local neotree_ui_inputs = require 'neo-tree.ui.inputs'
+local neotree_ui_command = require 'neo-tree.sources.common.commands'
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
 local lib = require 'diffview.lazy'.require 'diffview.lib'
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
-M.group_ids = {}
+local group_ids = {}
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
@@ -24,15 +24,15 @@ function M.infer_cur_file()
 end
 
 function M.confirm(msg, handler)
-  inputs.confirm(msg, handler)
+  neotree_ui_inputs.confirm(msg, handler)
 end
 
 function M.git_commit()
-  command.git_commit()
+  neotree_ui_command.git_commit()
 end
 
 function M.git_push()
-  command.git_push()
+  neotree_ui_command.git_push()
 end
 
 function M.hide_cursor()
@@ -43,7 +43,7 @@ function M.unhide_cursor()
   tools.unhide_cursor()
 end
 
-function M.get_bufnr()
+function M.get_diffview_bufnr()
   local targets = {
     "/DiffviewFilePanel$",
     "/DiffviewFileHistoryPanel$",
@@ -61,27 +61,55 @@ function M.get_bufnr()
   return -1
 end
 
-function M.clear_autocmd(tabnr)
-  local group_id = M.group_ids[tabnr]
-
-  if not group_id then
-    return
-  end
-
-  vim.api.nvim_clear_autocmds({ group = group_id })
-
-  M.group_ids[tabnr] = nil
+function M.get_tabnr()
+  return tools.get_tabnr()
 end
 
-function M.get_group_id()
-  local tabnr = tools.get_tabnr()
-  local group_name = 'ngpong_diffview_group_' .. tabnr
+function M.pop_groupid(key)
+  local group_id = group_ids[key]
+
+  if group_id then
+    group_ids[key] = nil
+  end
+
+  return group_id
+end
+
+function M.new_groupid(key)
+  local group_name = 'ngpong_diffview_group_' .. key
 
   local group_id = vim.api.nvim_create_augroup(group_name, { clear = true, })
 
-  M.group_ids[tabnr] = group_id
+  group_ids[key] = group_id
 
   return group_id
+end
+
+function M.get_nsid()
+  return vim.api.nvim_create_namespace('ngpong_diffview_ns')
+end
+
+function M.select_entry()
+  local view = lib.get_current_view()
+  if view.panel:is_open() then
+    local item = view.panel:get_item_at_cursor()
+    if item then
+      if type(item.collapsed) == "boolean" then
+        view.panel:toggle_item_fold(item)
+      else
+        view:set_file(item, true)
+      end
+    end
+  end
+end
+
+function M.test(name)
+  local view = lib.get_current_view()
+  for _, file in ipairs(view.panel:ordered_file_list()) do
+    if file.path == name then
+      view:set_file(file, true)
+    end
+  end
 end
 -------------------------------------------------------------------------------------
 

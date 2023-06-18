@@ -91,6 +91,17 @@ function M.get_win_list(...)
    return next(args) and vim.api.nvim_tabpage_list_wins(args[1]) or vim.api.nvim_tabpage_list_wins(0)
 end
 
+function M.get_buf_list(...)
+   local args = {...}
+
+   local tabnr = next(args) and args[1] or -1
+   if tabnr > 0 then
+      
+   else
+      return M.get_loaded_bufs()
+   end
+end
+
 function M.get_buf_name(...)
    local args = {...}
    return next(args) and vim.api.nvim_buf_get_name(args[1]) or vim.api.nvim_buf_get_name(0)
@@ -106,6 +117,11 @@ function M.get_loaded_bufs()
    end
 
    return bufs_loaded
+end
+
+function M.enum(t)
+   vim.tbl_add_reverse_lookup(t)
+   return t
 end
 
 -- local lastinput_key = ''

@@ -1,14 +1,16 @@
 ------------------------------------------------------------------------------------------------
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
 local tools = require 'utils.tool'
 local helper = require 'plugins.neo-tree.helper'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_open_tree(function()
+events.rg(event_name.OPEN_TREE, function()
+  local tabnr = helper.get_tabnr()
   local bufnr = helper.get_bufnr()
-  local group_id = helper.get_group_id()
+  local group_id = helper.new_groupid(tabnr)
 
   vim.api.nvim_create_autocmd('BufEnter', {
     group = group_id,
@@ -44,8 +46,12 @@ events.rg_on_open_tree(function()
   })
 end)
 
-events.rg_on_close_tree(function()
+events.rg(event_name.CLOSE_TREE, function()
+  local tabnr = helper.get_tabnr()
+  local group_id = helper.pop_groupid(tabnr)
+
   helper.unhide_cursor()
-  helper.clear_autocmds()
+
+  vim.api.nvim_clear_autocmds({ group = group_id })
 end)
 ------------------------------------------------------------------------------------------------

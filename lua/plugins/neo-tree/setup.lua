@@ -7,6 +7,7 @@
 
 ------------------------------------------------------------------------------------------------
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
 local tool = require 'utils.tool'
 local keymap = require 'plugins.neo-tree.keys'
@@ -205,13 +206,13 @@ local function cfg()
       {
         event = 'neo_tree_window_after_open',
         handler = function ()
-          events.do_on_open_tree()
+          events.emit(event_name.OPEN_TREE)
         end
       },
       {
         event = 'neo_tree_window_after_close',
         handler = function ()
-          events.do_on_close_tree()
+          events.emit(event_name.CLOSE_TREE)
         end
       }
     },

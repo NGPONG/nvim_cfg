@@ -224,4 +224,7 @@ vim.g.loaded_netrwPlugin = 1
 --
 -- REF: https://github.com/neovim/neovim/blob/master/runtime/pack/dist/opt/matchit/plugin/matchit.vim
 vim.g.loaded_matchit = 1
+
+-- 设置 <leader>
+vim.g.mapleader = '<SPACE>'
 ------------------------------------------------------------------------------------------------

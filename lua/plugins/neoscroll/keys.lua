@@ -1,9 +1,10 @@
 ------------------------------------------------------------------------------------------------
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_nvim_enter(function ()
+events.rg(event_name.VIM_ENTER, function ()
   local function set_keymap()
     local t = {}
 
