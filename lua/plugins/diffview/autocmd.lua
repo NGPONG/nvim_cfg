@@ -1,18 +1,17 @@
 ------------------------------------------------------------------------------------------------
 local events = require 'native.events'
+local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
 local tools = require 'utils.tool'
 local helper = require 'plugins.diffview.helper'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg_on_open_diffview(function (_)
-  local ns_id = vim.api.nvim_create_namespace("ngpong_diffview_ns")
-
-  -- 避开 diffview 的一些异步工作导致cursor无法正确设置
+events.rg(event_name.OPEN_DIFFVIEW, function (view)
   vim.on_key(function(_)
+    local tabnr = helper.get_tabnr()
     local bufnr = helper.get_diffview_bufnr()
-    local group_id = helper.new_group_id()
+    local group_id = helper.new_groupid(tabnr)
 
     vim.api.nvim_create_autocmd('BufEnter', {
       group = group_id,
@@ -47,12 +46,22 @@ events.rg_on_open_diffview(function (_)
       buffer = bufnr,
     })
 
-    vim.on_key(nil, ns_id)
-  end, ns_id)
+    vim.on_key(nil, helper.get_nsid())
+  end, helper.get_nsid())
 end)
 
-events.rg_on_close_diffview(function(view)
+events.rg(event_name.CLOSE_DIFFVIEW, function(view)
+  local tabnr = view.tabpage
+  local group_id = helper.pop_groupid(tabnr)
+
   helper.unhide_cursor()
-  helper.clear_autocmd(view.tabpage)
+
+  vim.api.nvim_clear_autocmds({ group = group_id })
+end)
+
+events.rg(event_name.OPEN_DIFFVIEW, function (view)
+  vim.on_key(function(_)
+    logger.info(2)
+  end, helper.get_nsid())
 end)
 ------------------------------------------------------------------------------------------------
