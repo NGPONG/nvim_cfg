@@ -6,6 +6,8 @@ local neotree_ui_command = require 'neo-tree.sources.common.commands'
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
 local lib = require 'diffview.lazy'.require 'diffview.lib'
+local async = require 'plenary.async'
+local await_schedule = require 'plenary.async'.util.scheduler
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
@@ -85,8 +87,8 @@ function M.new_groupid(key)
   return group_id
 end
 
-function M.get_nsid(key)
-  return vim.api.nvim_create_namespace('ngpong_diffview_ns_' .. key)
+function M.get_nsid()
+  return vim.api.nvim_create_namespace('ngpong_diffview_ns')
 end
 
 function M.select_entry()

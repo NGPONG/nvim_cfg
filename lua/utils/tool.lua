@@ -2,6 +2,8 @@ local M = {}
 
 ------------------------------------------------------------------------------------------------
 local logger = require('utils.log')
+local async = require 'plenary.async'
+local await_schedule = require 'plenary.async'.util.scheduler
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -56,18 +58,26 @@ function M.ishide_cursor()
 end
 
 function M.hide_cursor()
-   if not M.ishide_cursor() then
-      if vim.o.termguicolors and vim.o.guicursor ~= "" then
-         M.guicursor = vim.o.guicursor
-         vim.o.guicursor = "a:NGPONGHiddenCursor"
+   async.run(function ()
+      await_schedule()
+
+      if not M.ishide_cursor() then
+         if vim.o.termguicolors and vim.o.guicursor ~= "" then
+            M.guicursor = vim.o.guicursor
+            vim.o.guicursor = "a:NGPONGHiddenCursor"
+         end
       end
-   end
+   end)
 end
 
 function M.unhide_cursor()
-   if M.ishide_cursor() then
-      vim.o.guicursor = M.guicursor
-   end
+   async.run(function ()
+      await_schedule()
+
+      if M.ishide_cursor() then
+         vim.o.guicursor = M.guicursor
+      end
+   end)
 end
 
 function M.is_cursor_hide()
@@ -122,6 +132,14 @@ end
 function M.enum(t)
    vim.tbl_add_reverse_lookup(t)
    return t
+end
+
+function M.cur_thread()
+   return coroutine.running()
+end
+
+function M.tostring(key)
+   return vim.inspect(key)
 end
 
 -- local lastinput_key = ''

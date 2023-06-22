@@ -31,6 +31,8 @@ diffview 我觉得还是用 command 打开好一点，但是前提要将 command
 
 在什么都不打开文件的情况下无法触发一下临时key的设置，这个和 event 有关
 
+打开 neo-tree 打开一个 filehistory，然后再切换到 neo-tree 的标签，光标移动到12文件，然后再打开 filehistory
+
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context
 https://github.com/SmiteshP/nvim-navic

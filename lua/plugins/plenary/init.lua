@@ -3,5 +3,5 @@ require 'plugins.manager'.define(function(use)
 end)
 
 require 'plugins.manager'.setup(function(use)
-  require 'plugins.plenary.test_spec'
+  -- require 'plugins.plenary.test_spec'
 end)
