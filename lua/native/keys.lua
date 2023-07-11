@@ -1,15 +1,14 @@
+local M = {}
+
 ------------------------------------------------------------------------------------------------
 local tool = require 'utils.tool'
-local binder = require 'utils.keybinder'
-local mode = require 'utils.keybinder'.Mode
+local binder = require 'common.keybinder'
+local mode = require 'common.keybinder'.Mode
 local logger = require 'utils.log'
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
--- 移除全局 keymap
-events.rg(event_name.VIM_ENTER, function ()
+function M.del_native_keymaps()
   -- https://neovim.io/doc/user/repeat.html#complex-repeat
   binder.keymap(mode.NORMAL, 'q', '<NOP>')
   binder.keymap(mode.NORMAL, 'Q', '<NOP>')
@@ -234,16 +233,14 @@ events.rg(event_name.VIM_ENTER, function ()
   binder.keymap(mode.INSERT, '<A-}>', '<NOP>')
   binder.keymap(mode.NORMAL, '<C-S-e>', '<NOP>')
   binder.keymap(mode.NORMAL, '<C-S-d>', '<NOP>')
-end)
+end
 
--- 移除临时 keymap
-events.rg(event_name.BUFFER_READ, function ()
+function M.del_buffer_keymaps()
   -- https://neovim.io/doc/user/insert.html#inserting
   binder.keymap(mode.VISUAL, 'a', '<NOP>', { buffer = true })
-end)
+end
 
--- 绑定全局 keymap
-events.rg(event_name.VIM_ENTER, function ()
+function M.set_native_keymaps()
   -- 由于 <C-[> 与 <ESC> 的含义是相同的，当禁用了 <C-[> 后需要重新再映射一次 <ESC> 键
   binder.keymap(mode.INSERT, '<ESC>', '<ESC>', { remap = false })
 
@@ -354,10 +351,9 @@ events.rg(event_name.VIM_ENTER, function ()
   binder.keymap(mode.INSERT, '<A-Enter>', '<CR>', { remap = false })
   binder.keymap(mode.INSERT, '<A-backspace>', '<BS>', { remap = false })
   binder.keymap(mode.INSERT, '<TAB>', '<C-I>', { remap = false })
-end)
+end
 
--- 设置临时 keymap
-events.rg(event_name.BUFFER_READ, function()
+function M.set_buffer_keymaps()
   -- 改善 <HOME> 的功能
   --  1. 当前光标所在位置前面的字符不是全部 blank space 的情况下则跳跃到第一个字符所在位置
   --  2. 当前光标所在位置前面的字符全部是 blank space 的情况下则跳跃到第一列所在位置
@@ -394,5 +390,7 @@ events.rg(event_name.BUFFER_READ, function()
       return 'A'
     end
   end, { expr = true, remap = false, nowait = true, buffer = true })
-end)
+end
 ------------------------------------------------------------------------------------------------
+
+return M

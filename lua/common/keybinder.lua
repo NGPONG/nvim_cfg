@@ -112,12 +112,14 @@ M.Mode = tools.enum({
 
 ------------------------------------------------------------------------------------------------
 function M.keymap(mode, lhs, rhs, opts)
-  local default_opts = {
+  local final_opts = {
     remap = true,
     silent = true,
   }
 
-  vim.keymap.set(mode, lhs, rhs, require('utils.tool').tbl_r_extend(default_opts, opts or {}))
+  tools.tbl_r_extend(final_opts, opts or {})
+
+  vim.keymap.set(mode, lhs, rhs, final_opts)
 end
 ------------------------------------------------------------------------------------------------
 

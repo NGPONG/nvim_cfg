@@ -8,8 +8,8 @@
 ------------------------------------------------------------------------------------------------
 local tool = require 'utils.tool'
 local logger = require 'utils.log'
-local events = require('native.events')
-local event_name = require('native.events').Name
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------

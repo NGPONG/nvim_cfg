@@ -1,13 +1,13 @@
 ------------------------------------------------------------------------------------------------
-local binder = require 'utils.keybinder'
-local mode = require 'utils.keybinder'.Mode
+local binder = require 'common.keybinder'
+local mode = require 'common.keybinder'.Mode
 local tools = require 'utils.tool'
 local api = require 'nvim-tree.api'
 local view = require 'nvim-tree.view'
 local lib = require 'nvim-tree.lib'
 local logger = require 'utils.log'
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
@@ -45,9 +45,11 @@ local event_name = require 'native.events'.Name
 
 ------------------------------------------------------------------------------------------------
 local function key_opts(bufnr, desc, other)
-  local def = { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
-  local fin = tools.tbl_r_extend(def, other or {})
-  return fin
+  local final = { desc = 'nvim-tree: ' .. desc, buffer = bufnr, noremap = true, silent = true, nowait = true }
+
+  tools.tbl_r_extend(final, other or {})
+
+  return final
 end
 
 local function open_tab_silent(node)

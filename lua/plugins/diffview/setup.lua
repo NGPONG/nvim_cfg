@@ -6,40 +6,15 @@
 
 ------------------------------------------------------------------------------------------------
 local logger = require 'utils.log'
-local tools = require 'utils.tool'
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
-local keymap = require 'plugins.diffview.keys'
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local function hook_cfg()
-  return {
-    hooks = {
-      view_opened = function (view)
-        events.emit(event_name.OPEN_DIFFVIEW, view)
-      end,
-      view_closed = function (view)
-        events.emit(event_name.CLOSE_DIFFVIEW, view)
-      end
-    },
-  }
-end
-
-local function keymap_rebind_cfg()
-  return {
-    keymaps = {
-      disable_defaults = true,
-      file_panel = keymap.set_filepanel_keymaps(),
-      view = keymap.set_view_keymaps(),
-    }
-  }
-end
-
-local function cfg()
+local function f()
   local cfg = {
     diff_binaries = false,
-    enhanced_diff_hl = false,
+    enhanced_diff_hl = true,
     git_cmd = { "git" },
     hg_cmd = { "hg" },
     use_icons = true,
@@ -115,13 +90,12 @@ local function cfg()
     },
   }
 
-  cfg = tools.tbl_r_deepextend(keymap_rebind_cfg(), cfg)
-  cfg = tools.tbl_r_deepextend(hook_cfg(), cfg)
+  events.emit(event_name.SETUP_DIFFVIEW, cfg)
 
   return cfg
 end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-require("diffview").setup(cfg())
+require("diffview").setup(f())
 ------------------------------------------------------------------------------------------------

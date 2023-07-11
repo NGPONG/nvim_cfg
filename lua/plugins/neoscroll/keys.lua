@@ -1,10 +1,7 @@
-------------------------------------------------------------------------------------------------
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
-------------------------------------------------------------------------------------------------
+local M = {}
 
 ------------------------------------------------------------------------------------------------
-events.rg(event_name.VIM_ENTER, function ()
+function M.set_native_keymaps()
   local function set_keymap()
     local t = {}
 
@@ -17,5 +14,7 @@ events.rg(event_name.VIM_ENTER, function ()
   end
 
   require('neoscroll.config').set_mappings(set_keymap())
-end)
+end
 ------------------------------------------------------------------------------------------------
+
+return M

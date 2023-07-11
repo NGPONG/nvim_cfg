@@ -8,6 +8,8 @@ local logger = require 'utils.log'
 local lib = require 'diffview.lazy'.require 'diffview.lib'
 local async = require 'plenary.async'
 local await_schedule = require 'plenary.async'.util.scheduler
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
@@ -15,6 +17,40 @@ local group_ids = {}
 -------------------------------------------------------------------------------------
 
 -------------------------------------------------------------------------------------
+M.ViewType = tools.enum({
+  NONE = 1,
+  FILE_PANEL = 2,
+  FILE_HISTORY = 3,
+})
+-------------------------------------------------------------------------------------
+
+-------------------------------------------------------------------------------------
+function M.view_opened(view)
+  local type = M.get_view_type(view)
+
+  if M.ViewType.NONE == type then
+    return
+  else
+    events.emit(event_name.INIT_DIFFVIEW, view)
+  end
+
+  if M.ViewType.FILE_PANEL == type then
+    events.emit(event_name.OPEN_DIFFVIEW_FILE_PANEL, view)
+  elseif M.ViewType.FILE_HISTORY == type then
+    events.emit(event_name.OPEN_DIFFVIEW_FILE_HISTORY, view)
+  end
+end
+
+function M.view_closed(view)
+  local type = M.get_view_type(view)
+
+  if M.ViewType.FILE_PANEL == type then
+    events.emit(event_name.CLOSE_DIFFVIEW_FILE_PANEL, view)
+  elseif M.ViewType.FILE_HISTORY == type then
+    events.emit(event_name.CLOSE_DIFFVIEW_FILE_HISTORY, view)
+  end
+end
+
 function M.infer_cur_file()
   local view = lib.get_current_view()
 
@@ -67,17 +103,21 @@ function M.get_tabnr()
   return tools.get_tabnr()
 end
 
-function M.pop_groupid(key)
+function M.del_augroup(key)
   local group_id = group_ids[key]
 
   if group_id then
     group_ids[key] = nil
   end
 
-  return group_id
+  vim.api.nvim_del_augroup_by_id(group_id)
 end
 
-function M.new_groupid(key)
+function M.new_augroup(key)
+  if group_ids[key] ~= nil then
+    return group_ids[key]
+  end
+
   local group_name = 'ngpong_diffview_group_' .. key
 
   local group_id = vim.api.nvim_create_augroup(group_name, { clear = true, })
@@ -102,6 +142,20 @@ function M.select_entry()
         view:set_file(item, true)
       end
     end
+  end
+end
+
+function M.get_view_type(view)
+  if not view then
+    return M.ViewType.NONE
+  end
+
+  if view.panel.bufname == 'DiffviewFilePanel' then
+    return M.ViewType.FILE_PANEL
+  elseif view.panel.bufname == 'DiffviewFileHistoryPanel' then
+    return M.ViewType.FILE_HISTORY
+  else
+    return M.ViewType.NONE
   end
 end
 

@@ -1,1 +1,1 @@
-require 'ngpong'
+require 'ngpong' --require 'test'

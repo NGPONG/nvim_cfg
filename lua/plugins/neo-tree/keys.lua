@@ -2,10 +2,8 @@
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
 local helper = require 'plugins.neo-tree.helper'
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
-local binder = require 'utils.keybinder'
-local mode = require 'utils.keybinder'.Mode
+local binder = require 'common.keybinder'
+local mode = require 'common.keybinder'.Mode
 ------------------------------------------------------------------------------------------------
 
 local M = {}
@@ -19,7 +17,7 @@ function M.mapping_opts(...)
   }
 end
 
-function M.rm_global_keymaps(...)
+function M.del_neotree_keymaps(...)
   return {
     ['sv'] = function(...) end,
     ['sh'] = function(...) end,
@@ -49,7 +47,7 @@ function M.rm_global_keymaps(...)
   }
 end
 
-function M.set_global_keymaps(...)
+function M.set_neotree_keymaps(...)
   return {
     -- https://github.com/nvim-neo-tree/neo-tree.nvim/issues/940
     -- https://www.reddit.com/r/vim/comments/4ofv82/the_normal_command_is_really_cool/
@@ -98,20 +96,17 @@ function M.set_filesys_keymaps(...)
     ['a'] = 'add',
   }
 end
-------------------------------------------------------------------------------------------------
 
-------------------------------------------------------------------------------------------------
-events.rg(event_name.VIM_ENTER, function ()
+function M.del_native_keymaps()
   -- https://neovim.io/doc/user/motion.html#up-down-motions
   binder.keymap(mode.NORMAL, '<C-m>', '<NOP>')
-
   -- <CR> 与 <C-m> 含义相同，故禁用掉该行为
   binder.keymap(mode.NORMAL, '<CR>', '<NOP>')
-end)
+end
 
-events.rg(event_name.VIM_ENTER, function ()
+function M.set_native_keymaps()
   binder.keymap(mode.NORMAL, '<C-m>', '<CMD>Neotree action=focus toggle=true<CR>', { remap = false, silent = true })
-end)
+end
 ------------------------------------------------------------------------------------------------
 
 return M

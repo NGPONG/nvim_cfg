@@ -1,18 +1,18 @@
+local M = {}
+
 ------------------------------------------------------------------------------------------------
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
 local tools = require 'utils.tool'
 local helper = require 'plugins.neo-tree.helper'
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-events.rg(event_name.OPEN_TREE, function()
+function M.set_donot_used_cursor_autocmds()
   local tabnr = helper.get_tabnr()
   local bufnr = helper.get_bufnr()
-  local group_id = helper.new_groupid(tabnr)
+  local group_id = helper.new_augroup(tabnr)
 
-  vim.api.nvim_create_autocmd('BufEnter', {
+  vim.api.nvim_create_autocmd('WinEnter', {
     group = group_id,
     buffer = bufnr,
     callback = function(_)
@@ -20,7 +20,7 @@ events.rg(event_name.OPEN_TREE, function()
     end
   })
 
-  vim.api.nvim_create_autocmd('BufLeave', {
+  vim.api.nvim_create_autocmd('WinLeave', {
     group = group_id,
     buffer = bufnr,
     callback = function(_)
@@ -40,18 +40,19 @@ events.rg(event_name.OPEN_TREE, function()
     end
   })
 
-  vim.api.nvim_exec_autocmds('BufEnter', {
+  vim.api.nvim_exec_autocmds('WinEnter', {
     group = group_id,
     buffer = bufnr,
   })
-end)
+end
 
-events.rg(event_name.CLOSE_TREE, function()
+function M.del_all_autocmds()
   local tabnr = helper.get_tabnr()
-  local group_id = helper.pop_groupid(tabnr)
+
+  helper.del_augroup(tabnr)
 
   helper.unhide_cursor()
-
-  vim.api.nvim_clear_autocmds({ group = group_id })
-end)
+end
 ------------------------------------------------------------------------------------------------
+
+return M

@@ -31,7 +31,13 @@ diffview 我觉得还是用 command 打开好一点，但是前提要将 command
 
 在什么都不打开文件的情况下无法触发一下临时key的设置，这个和 event 有关
 
+diffview file history 打开自己 code 项目会报错，确定可能是 nvim 内置的 api 存在的问题，明天需要验证一下
+  * 已发 issues
+  * 但是我发现在索引的过程中会卡顿一下，暂时不知道是啥问题，所以 log 先不要还原
+
 打开 neo-tree 打开一个 filehistory，然后再切换到 neo-tree 的标签，光标移动到12文件，然后再打开 filehistory
+  * 能够确定是因为在当前 tabpage 中获取不到树导致调用了一些空指针
+  * 把 neo-tree 那篇 issuse 给发了
 
 可选
 https://github.com/nvim-treesitter/nvim-treesitter-context

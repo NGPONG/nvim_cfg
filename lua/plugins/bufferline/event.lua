@@ -1,31 +1,18 @@
 ------------------------------------------------------------------------------------------------
--- TUTORIAL:
---  1. https://github.com/karb94/neoscroll.nvim
-------------------------------------------------------------------------------------------------
-
-------------------------------------------------------------------------------------------------
+local tool = require 'utils.tool'
 local logger = require 'utils.log'
+local keymap = require 'plugins.bufferline.keys'
+local async = require 'plenary.async'
 local events = require 'common.events'
 local event_name = require 'common.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local function f()
-  local cfg = {
-    mappings = {},
-    hide_cursor = false,
-    stop_eof = true,
-    respect_scrolloff = false,
-    cursor_scrolls_alone = true,
-    performance_mode = false,
-  }
-
-  events.emit(event_name.SETUP_NEOSCROLL, cfg)
-
-  return cfg
-end
+local await_schedule = async.util.scheduler
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-require('neoscroll').setup(f())
+events.rg(event_name.VIM_ENTER, async.void(function()
+  keymap.set_native_keymaps()
+end))
 ------------------------------------------------------------------------------------------------

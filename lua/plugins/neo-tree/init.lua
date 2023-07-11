@@ -27,8 +27,7 @@ require 'plugins.manager'.define(function(use)
 end)
 
 require 'plugins.manager'.setup(function(use)
+  require 'plugins.neo-tree.event'
   require 'plugins.neo-tree.opts'
-  require 'plugins.neo-tree.keys'
-  require 'plugins.neo-tree.autocmd'
   require 'plugins.neo-tree.setup'
 end)

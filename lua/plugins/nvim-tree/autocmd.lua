@@ -1,7 +1,7 @@
 ------------------------------------------------------------------------------------------------
 local view = require 'nvim-tree.view'
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 local logger = require 'utils.log'
 local tool = require 'utils.tool'
 ------------------------------------------------------------------------------------------------

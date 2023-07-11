@@ -1,9 +1,9 @@
 ------------------------------------------------------------------------------------------------
 local tools = require 'utils.tool'
 local logger = require 'utils.log'
-local binder = require 'utils.keybinder'
-local mode = require 'utils.keybinder'.Mode
-local events = require 'native.events'
+local binder = require 'common.keybinder'
+local mode = require 'common.keybinder'.Mode
+local events = require 'common.events'
 local actions = require 'diffview.actions'
 local helper = require 'plugins.diffview.helper'
 ------------------------------------------------------------------------------------------------
@@ -12,9 +12,11 @@ local M = {}
 
 ------------------------------------------------------------------------------------------------
 local function key_opts(desc, other)
-  local def = { desc = 'diffview: ' .. desc, noremap = true, silent = true, nowait = true }
-  local fin = tools.tbl_r_extend(def, other or {})
-  return fin
+  local final = { desc = 'diffview: ' .. desc, noremap = true, silent = true, nowait = true }
+
+  tools.tbl_r_extend(final, other or {})
+
+  return final
 end
 ------------------------------------------------------------------------------------------------
 
@@ -162,7 +164,9 @@ function M.set_filepanel_keymaps(_)
     { mode.NORMAL, 'sc', '<NOP>', key_opts('Disable sc') },
 
     -- 设置 keymap
-    { mode.NORMAL, '<cr>', helper.select_entry, key_opts('Open the diff for the selected entry') },
+    { mode.NORMAL, '>', actions.select_next_entry, key_opts('Open the diff for the next file.') },
+    { mode.NORMAL, '<', actions.select_prev_entry, key_opts('Open the diff for the prev file.') },
+    { mode.NORMAL, '<cr>', actions.select_entry, key_opts('Open the diff for the selected entry') },
     { mode.NORMAL, '<C-m>', actions.toggle_files, key_opts('Toggle the file panel.') },
     { mode.NORMAL, 'ga', function ()
         local item = helper.infer_cur_file()
@@ -195,22 +199,29 @@ function M.set_filepanel_keymaps(_)
   }
 end
 
+function M.set_filehistorypanel_keymaps()
+  return {
+    -- 设置 keymap
+    { mode.NORMAL, '<cr>', actions.select_entry, key_opts('Open the diff for the selected entry') },
+  }
+end
+
 function M.set_view_keymaps(_)
   return {
     -- 移除 keymap
-    { mode.NORMAL, 'b.', '<NOP>', key_opts('Disable b.') },
-    { mode.NORMAL, 'b,', '<NOP>', key_opts('Disable b,') },
-    { mode.NORMAL, 'B>', '<NOP>', key_opts('Disable B>') },
-    { mode.NORMAL, 'B<', '<NOP>', key_opts('Disable B<') },
-    { mode.NORMAL, 'bs', '<NOP>', key_opts('Disable bs') },
-    { mode.NORMAL, 'bp', '<NOP>', key_opts('Disable bp') },
-    { mode.NORMAL, 'bc', '<NOP>', key_opts('Disable bc') },
-    { mode.NORMAL, 'BC', '<NOP>', key_opts('Disable BC') },
+    --{ mode.NORMAL, 'b.', '<NOP>', key_opts('Disable b.') },
+    --{ mode.NORMAL, 'b,', '<NOP>', key_opts('Disable b,') },
+    --{ mode.NORMAL, 'B>', '<NOP>', key_opts('Disable B>') },
+    --{ mode.NORMAL, 'B<', '<NOP>', key_opts('Disable B<') },
+    --{ mode.NORMAL, 'bs', '<NOP>', key_opts('Disable bs') },
+    --{ mode.NORMAL, 'bp', '<NOP>', key_opts('Disable bp') },
+    --{ mode.NORMAL, 'bc', '<NOP>', key_opts('Disable bc') },
+    --{ mode.NORMAL, 'BC', '<NOP>', key_opts('Disable BC') },
 
     -- 设置 keymap
     { mode.NORMAL, '<C-m>', actions.toggle_files, key_opts('Toggle the file panel.') },
-    --{ mode.NORMAL, '>', actions.select_next_entry, key_opts('Open the diff for the next file.') },
-    --{ mode.NORMAL, '<', actions.select_prev_entry, key_opts('Open the diff for the prev file.') },
+    { mode.NORMAL, '>', actions.select_next_entry, key_opts('Open the diff for the next file.') },
+    { mode.NORMAL, '<', actions.select_prev_entry, key_opts('Open the diff for the prev file.') },
   }
 end
 ------------------------------------------------------------------------------------------------

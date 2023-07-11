@@ -58,17 +58,21 @@ function M.get_tabnr()
   return tools.get_tabnr()
 end
 
-function M.pop_groupid(key)
+function M.del_augroup(key)
   local group_id = group_ids[key]
 
   if group_id then
     group_ids[key] = nil
   end
 
-  return group_id
+  vim.api.nvim_del_augroup_by_id(group_id)
 end
 
-function M.new_groupid(key)
+function M.new_augroup(key)
+  if group_ids[key] ~= nil then
+    return group_ids[key]
+  end
+
   local group_name = 'ngpong_neo-tree_group_' .. key
 
   local group_id = vim.api.nvim_create_augroup(group_name, { clear = true, })

@@ -20,12 +20,35 @@ function M.tbl_dump(o)
    end
 end
 
-function M.tbl_r_extend(...)
-   return vim.tbl_extend('force', ...)
+function M.equal(lhs, rhs)
+   return vim.deep_equal(lhs, rhs)
 end
 
-function M.tbl_r_deepextend(...)
+function M.tbl_rr_extend(...)
    return vim.tbl_deep_extend('force', ...)
+end
+
+function M.tbl_r_extend(org, ...)
+   local function can_merge(v)
+      return type(v) == 'table' and (vim.tbl_isempty(v) or not vim.tbl_isarray(v))
+   end
+
+   if select('#', ...) <= 0 then
+      return
+   end
+
+   for i = 1, select('#', ...) do
+     local tbl = select(i, ...)
+     if tbl then
+       for k, v in pairs(tbl) do
+         if can_merge(v) and can_merge(org[k]) then
+           M.tbl_r_extend(org[k], v)
+         else
+           org[k] = v
+         end
+       end
+     end
+   end
 end
 
 function M.tbl_unpack(t)
@@ -140,6 +163,14 @@ end
 
 function M.tostring(key)
    return vim.inspect(key)
+end
+
+function M.hide_bufline()
+   vim.go.showtabline = 0
+end
+
+function M.show_bufline()
+   vim.go.showtabline = 2
 end
 
 -- local lastinput_key = ''

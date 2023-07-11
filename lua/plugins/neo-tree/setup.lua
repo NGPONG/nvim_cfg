@@ -6,119 +6,13 @@
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local events = require 'native.events'
-local event_name = require 'native.events'.Name
 local logger = require 'utils.log'
-local tool = require 'utils.tool'
-local keymap = require 'plugins.neo-tree.keys'
+local events = require 'common.events'
+local event_name = require 'common.events'.Name
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-local function keymap_remove_cfg()
-  return {
-    window = {
-      mapping_options = keymap.mapping_opts(),
-      mappings = keymap.rm_global_keymaps(),
-    },
-  }
-end
-
-local function keymap_rebind_cfg()
-  return {
-    window = {
-      mapping_options = keymap.mapping_opts(),
-      mappings = keymap.set_global_keymaps(),
-    },
-    filesystem = {
-      window = {
-        mapping_options = keymap.mapping_opts(),
-        mappings = keymap.set_filesys_keymaps(),
-      }
-    }
-  }
-end
-
-local function fix942_cfg()
-  -- https://github.com/nvim-neo-tree/neo-tree.nvim/issues/942
-  return {
-    git_status_async = false,
-    filesystem = {
-      async_directory_scan = "never",
-    },
-  }
-end
-
-local function fix337_cfg()
-  -- https://github.com/nvim-neo-tree/neo-tree.nvim/issues/337
-  return {
-    enable_git_status = true,
-    filesystem = {
-      use_libuv_file_watcher = true,
-    },
-  }
-end
-
-local function fixicon_cfg()
-  return {
-    default_component_configs = {
-      indent = {
-        indent_marker = "│",
-        last_indent_marker = "└",
-        expander_collapsed = "",
-        expander_expanded = "",
-      },
-      icon = {
-        folder_closed = "",
-        folder_open = "",
-        folder_empty = "",
-        folder_empty_open = "",
-        -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
-        -- then these will never be used.
-        default = "*",
-      },
-      modified = {
-        symbol = "[+]",
-      },
-      git_status = {
-        symbols = {
-          -- Change type
-          added     = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-          modified  = "", -- or "", but this is redundant info if you use git_status_colors on the name
-          deleted   = "✖",-- this can only be used in the git_status source
-          renamed   = "󰁕",-- this can only be used in the git_status source
-          -- Status type
-          untracked = "",
-          ignored   = "",
-          unstaged  = "",
-          staged    = "",
-          conflict  = "",
-        }
-      },
-    },
-    document_symbols = {
-      kinds = {
-        File = { icon = "󰈙", hl = "Tag" },
-        Namespace = { icon = "󰌗", hl = "Include" },
-        Package = { icon = "󰏖", hl = "Label" },
-        Class = { icon = "󰌗", hl = "Include" },
-        Property = { icon = "󰆧", hl = "@property" },
-        Enum = { icon = "󰒻", hl = "@number" },
-        Function = { icon = "󰊕", hl = "Function" },
-        String = { icon = "󰀬", hl = "String" },
-        Number = { icon = "󰎠", hl = "Number" },
-        Array = { icon = "󰅪", hl = "Type" },
-        Object = { icon = "󰅩", hl = "Type" },
-        Key = { icon = "󰌋", hl = "" },
-        Struct = { icon = "󰌗", hl = "Type" },
-        Operator = { icon = "󰆕", hl = "Operator" },
-        TypeParameter = { icon = "󰊄", hl = "Type" },
-        StaticMethod = { icon = '󰠄 ', hl = 'Function' },
-      }
-    },
-  }
-end
-
-local function cfg()
+local function f()
   local cfg = {
     log_level = "fatal",
     log_to_file = true,
@@ -180,7 +74,6 @@ local function cfg()
       bind_to_cwd = true,
       follow_current_file = true,
       group_empty_dirs = false,
-
     },
     buffers = {
       bind_to_cwd = true,
@@ -218,16 +111,12 @@ local function cfg()
     },
   }
 
-  cfg = tool.tbl_r_deepextend(keymap_rebind_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(keymap_remove_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(fix337_cfg(), cfg)
-  --cfg = tool.tbl_r_deepextend(fix942_cfg(), cfg)
-  cfg = tool.tbl_r_deepextend(fixicon_cfg(), cfg)
+  events.emit(event_name.SETUP_TREE, cfg)
 
   return cfg
 end
 ------------------------------------------------------------------------------------------------
 
 ------------------------------------------------------------------------------------------------
-require("neo-tree").setup(cfg())
+require("neo-tree").setup(f())
 ------------------------------------------------------------------------------------------------

@@ -5,6 +5,6 @@ require 'plugins.manager'.define(function(use)
 end)
 
 require 'plugins.manager'.setup(function(use)
+  require 'plugins.neoscroll.event'
   require 'plugins.neoscroll.setup'
-  require 'plugins.neoscroll.keys'
 end)
